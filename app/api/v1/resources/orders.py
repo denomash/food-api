@@ -123,3 +123,18 @@ class Orderbyid(Resource):
         else:
             order.update(data)
             return exist, 200
+
+    def delete(self, order_id):
+        """ delete an order """
+
+        order_to_delete = [
+            order for order in order_data if order['id'] == order_id]
+
+        if not order_to_delete:
+
+            return {'Message': 'Invalid order id'}, 404
+
+        else:
+
+            order_data.remove(order_to_delete[0])
+            return {'Order': 'Order deleted'}, 200
