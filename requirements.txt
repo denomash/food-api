@@ -1,3 +1,4 @@
+aniso8601==3.0.2
 asn1crypto==0.24.0
 astroid==1.6.5
 atomicwrites==1.2.1
@@ -14,9 +15,11 @@ cryptography==2.3.1
 docopt==0.6.2
 enum34==1.1.6
 Flask==1.0.2
+Flask-RESTful==0.3.6
+Flask-SQLAlchemy==2.3.2
 funcsigs==1.0.2
 get==1.0.3
-gunicorn
+gunicorn==19.9.0
 idna==2.7
 ipaddress==1.0.22
 isort==4.3.4
@@ -26,9 +29,12 @@ lazy-object-proxy==1.3.1
 MarkupSafe==1.0
 mccabe==0.6.1
 more-itertools==4.3.0
+MySQL-python==1.2.5
 pathlib2==2.3.2
 pluggy==0.7.1
 post==1.0.2
+psycopg2==2.7.5
+psycopg2-binary==2.7.5
 public==1.0.3
 py==1.6.0
 pycparser==2.18
@@ -37,12 +43,14 @@ pyOpenSSL==18.0.0
 pytest==3.8.0
 pytest-cov==2.6.0
 pytest-flask==0.12.0
+pytz==2018.5
 query-string==1.0.2
 request==1.0.2
 requests==2.19.1
 scandir==1.9.0
 singledispatch==3.4.0.3
 six==1.11.0
+SQLAlchemy==1.2.11
 urllib3==1.23
 Werkzeug==0.14.1
 wrapt==1.10.11
