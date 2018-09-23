@@ -1,0 +1,24 @@
+language: python
+
+python:
+  - "3.6"
+
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+# command to run tests
+script:
+  - coverage run -m pytest -v app/tests/v1/test_orders.py ; coverage report app/tests/v1/test_orders.py app/*.py
+  
+after_script:
+  - coverage report
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
+after_success:
+  - coveralls
