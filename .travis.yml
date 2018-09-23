@@ -17,7 +17,6 @@ script:
   - pytest --cov=app/tests/v1
   
 after_script:
-  - coverage report
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 after_success:
