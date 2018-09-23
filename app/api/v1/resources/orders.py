@@ -58,10 +58,10 @@ class Orders(Resource):
 
             return {'Message': 'Ordered item alredy exist'}, 400
 
-        id = len(order_data) + 1
+        _id = len(order_data) + 1
 
         new_order = {
-            'id': id,
+            'id': _id,
             'item': data['item'],
             'price': data['price'],
             'quantity': data['quantity'],
