@@ -13,6 +13,12 @@ class Order_tests(unittest.TestCase):
     def setUp(self):
         app = create_app('testing')
         self.client = app.test_client()
+        self.order2 = {
+            'item': 'pasta',
+            'price': 800,
+            'address': 'juja',
+            'quantity': '2'
+        }
 
     def test_404_get_all_orders(self):
         """ test 404 if order found"""
@@ -30,3 +36,8 @@ class Order_tests(unittest.TestCase):
         if order_data:
             self.assertIn("Order", response)
             self.assertEqual(response.status_code, 200)
+
+    def test_place_new_order(self):
+        response = self.client.post(
+            '/api/v1/orders', data=json.dumps(self.order2), content_type='application/json')
+        self.assertEqual(response.status_code, 201)
