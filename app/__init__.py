@@ -13,23 +13,17 @@ api = Api(api_blueprint)
 
 
 def create_app(configuration_name):
-	"""Initialize the app"""
+    """Initialize the app"""
 
-	app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, instance_relative_config=True)
 
-	# Load the config file
-	app.config.from_object(configuration[configuration_name])
+    # Load the config file
+    app.config.from_object(configuration[configuration_name])
 
-	# register blueprints
-	app.register_blueprint(api_blueprint, url_prefix='/api/v1')
+    # register blueprints
+    app.register_blueprint(api_blueprint, url_prefix='/api/v1')
 
-	# base route
-	@app.route('/')
-	def index():
-		"""base route"""
-		return "Hello champ!!"
-
-	return app
+    return app
 
 # Resourses
 api.add_resource(Get_orders, '/orders')
