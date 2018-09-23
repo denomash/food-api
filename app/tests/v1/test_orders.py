@@ -13,6 +13,13 @@ class Order_tests(unittest.TestCase):
     def setUp(self):
         app = create_app('testing')
         self.client = app.test_client()
+        self.order = {
+            'id': 1,
+            'item': 'pizza',
+            'price': 900,
+            'quantity': '4',
+            'delivered': False
+        }
         self.order2 = {
             'item': 'pasta',
             'price': 800,
@@ -41,3 +48,9 @@ class Order_tests(unittest.TestCase):
         response = self.client.post(
             '/api/v1/orders', data=json.dumps(self.order2), content_type='application/json')
         self.assertEqual(response.status_code, 201)
+
+    def test_get_order_with_order_id(self):
+        order_data.append(self.order)
+        response = self.client.get(
+            '/api/v1/orders/1', content_type='application/json')
+        self.assertEqual(response.status_code, 200)

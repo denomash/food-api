@@ -72,3 +72,20 @@ class Orders(Resource):
         order_data.append(new_order)
 
         return {'Order': new_order}, 201
+
+
+class Orderbyid(Resource):
+    """docstring for Orders by id """
+
+    def get(self, order_id):
+        """ get order by id"""
+
+        exist = [order for order in order_data if order['id'] == order_id]
+
+        if not exist:
+
+            return {'Message': 'Invalid order id'}, 400
+
+        else:
+
+            return {'Order': exist[0]}, 200
