@@ -2,3 +2,6 @@
 
 # initialize data structure for orders
 order_data = list()
+
+# initialize data structure for users
+users = list()
