@@ -11,3 +11,5 @@ Have the following:
 |`/api/v1/orders`    |   POST     | posts a new order   |
 |--------------      |----------- | -----------------   |
 |`/api/v1/order/<id>`|   GET      |gets an order by id  |
+|--------------      |----------- | -----------------   |
+|`/api/v1/order/<id>`|   PUT      |updates order by id  |
