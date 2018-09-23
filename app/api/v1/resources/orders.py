@@ -122,4 +122,4 @@ class Orderbyid(Resource):
             return {'Message': 'Invalid order id'}, 404
         else:
             order.update(data)
-            return order, 200
+            return exist, 200
