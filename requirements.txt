@@ -16,7 +16,6 @@ docopt==0.6.2
 enum34==1.1.6
 Flask==1.0.2
 Flask-RESTful==0.3.6
-Flask-SQLAlchemy==2.3.2
 funcsigs==1.0.2
 get==1.0.3
 gunicorn==19.9.0
@@ -29,7 +28,6 @@ lazy-object-proxy==1.3.1
 MarkupSafe==1.0
 mccabe==0.6.1
 more-itertools==4.3.0
-MySQL-python==1.2.5
 pathlib2==2.3.2
 pluggy==0.7.1
 post==1.0.2
@@ -50,7 +48,6 @@ requests==2.19.1
 scandir==1.9.0
 singledispatch==3.4.0.3
 six==1.11.0
-SQLAlchemy==1.2.11
 urllib3==1.23
 Werkzeug==0.14.1
 wrapt==1.10.11
