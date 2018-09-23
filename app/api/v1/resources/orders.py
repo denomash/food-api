@@ -77,6 +77,27 @@ class Orders(Resource):
 class Orderbyid(Resource):
     """docstring for Orders by id """
 
+    parser = reqparse.RequestParser()
+
+    parser.add_argument(
+        'item',
+        type=str
+    )
+    parser.add_argument(
+        'price',
+        type=float
+    )
+    parser.add_argument(
+        'address',
+        type=str,
+        required=True,
+        help="Price is required"
+    )
+    parser.add_argument(
+        'quantity',
+        type=int
+    )
+
     def get(self, order_id):
         """ get order by id"""
 
@@ -89,3 +110,16 @@ class Orderbyid(Resource):
         else:
 
             return {'Order': exist[0]}, 200
+
+    def put(self, order_id):
+        """update order by id"""
+
+        data = Orderbyid.parser.parse_args()
+
+        exist = [order for order in order_data if order['id'] == order_id]
+
+        if not exist:
+            return {'Message': 'Invalid order id'}, 404
+        else:
+            order.update(data)
+            return order, 200

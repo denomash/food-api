@@ -54,3 +54,18 @@ class Order_tests(unittest.TestCase):
         response = self.client.get(
             '/api/v1/orders/1', content_type='application/json')
         self.assertEqual(response.status_code, 200)
+
+    def test_update_order_with_order_id(self):
+        order_data.append(self.order)
+        order = {
+            'item': 'pizza',
+            'price': 900,
+            'address': 'K-Road',
+            'quantity': '4'
+        }
+        response = self.client.put(
+            '/api/v1/orders/1', data=order)
+        self.assertEqual(response.status_code, 200)
+
+if __name__ == '__main__':
+    unittest.main()
