@@ -6,6 +6,17 @@ from flask_restful import Resource, reqparse
 from ..models import order_data
 
 
+class Get_orders(Resource):
+    """docstring for Order"""
+
+    def get(self):
+        """get all orders"""
+        if not order_data:
+            return {'Message': 'No orders found'}, 404
+        else:
+            return {'Orders': order_data}, 200
+
+
 class Orders(Resource):
     """docstring for Orders"""
 
@@ -35,15 +46,6 @@ class Orders(Resource):
         required=True,
         help="Number of food items is required"
     )
-
-    def get(self):
-        """get all orders"""
-        if not order_data:
-
-            return {'Message': 'No orders found'}, 404
-        else:
-
-            return {'Orders': order_data}, 200
 
     def post(self):
         """create new order"""
