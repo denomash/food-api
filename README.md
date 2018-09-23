@@ -4,10 +4,10 @@
 
 Have the following:
 
-|   # Endpoint     |  # Methods | # Description       |
-| -------------    |----------- | ------------------  | 
-|/api/v1/orders    |   GET      |  gets all orders    |
-| ------------     | ---------- | -----------------   |
-|/api/v1/orders    |   POST     | posts a new order   |
-|--------------    |----------- | -----------------   |
-|/api/v1/order/<id>|   GET      |gets an order by id  |
+|   # Endpoint       |  # Methods | # Description       |
+| -------------      |----------- | ------------------  | 
+|`/api/v1/orders`    |   GET      |  gets all orders    |
+| ------------       | ---------- | -----------------   |
+|`/api/v1/orders`    |   POST     | posts a new order   |
+|--------------      |----------- | -----------------   |
+|`/api/v1/order/<id>`|   GET      |gets an order by id  |
