@@ -40,6 +40,9 @@ Then run(each at a time):
 `export FLASK_APP=run.py`
 `flask run`
 
+How to test:
+RUN `pytest --cov=app/tests/v1`
+
 Then use postman to test the following endpoints:
 
 |   # Endpoint       |  # Methods | # Description       |
