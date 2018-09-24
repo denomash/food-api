@@ -4,7 +4,7 @@ import psycopg2
 import os
 
 #local imports
-from fastfood import queries
+from .fastfood import queries
 
 def db():
 
