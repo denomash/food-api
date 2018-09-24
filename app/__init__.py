@@ -5,6 +5,7 @@ from flask_restful import Api
 
 # local imports
 from config import configuration
+from .api.v1.db import init_db
 from .api.v1.resources.orders import Get_orders, Orders, Orderbyid
 from .api.v1.resources.auth import Register, Login
 
@@ -20,6 +21,9 @@ def create_app(configuration_name):
 
     # Load the config file
     app.config.from_object(configuration[configuration_name])
+
+    # initialize the database
+    init_db()
 
     # register blueprints
     app.register_blueprint(api_blueprint, url_prefix='/api/v1')

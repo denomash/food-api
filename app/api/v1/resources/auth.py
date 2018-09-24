@@ -1,9 +1,24 @@
 # app/api/v1/resources/auth.py
 
 from flask_restful import Resource, reqparse
+import re
 
 # local imports
 from ..models import users
+
+
+def validate():
+
+    while True:
+        if len(password) < 8:
+            print("Make sure your password is at lest 8 letters")
+        elif re.search('[0-9]', password) is None:
+            print("Make sure your password has a number in it")
+        elif re.search('[A-Z]', password) is None:
+            print("Make sure your password has a capital letter in it")
+        else:
+            print("Your password seems fine")
+            break
 
 
 class Register(Resource):
@@ -40,6 +55,27 @@ class Register(Resource):
 
         data = Register.parser.parse_args()
 
+        username = data["username"]
+        email = data["email"]
+        password = data["password"]
+        confirm_password = data["confirm password"]
+
+        while True:
+            if not re.match(r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)", email):
+                return {"Message": "Make sure your email is valid"}
+            elif re.search('[a-z]', password) is None:
+                return {"Message": "Make sure your password has a small letter in it"}
+            elif re.search('[0-9]', password) is None:
+                return {"Message": "Make sure your password has a number in it"}
+            elif re.search('[A-Z]', password) is None:
+                return {"Message": "Make sure your password has a capital letter in it"}
+            elif len(password) < 8:
+                return {"Message": "Make sure your password is at lest 8 letters"}
+            elif password != confirm_password:
+                return {"Message": "password and confirm_password must be the same"}
+            else:
+                break
+
         exist = [user for user in users if user['email'] == data['email']]
 
         if (len(exist) != 0):
@@ -63,7 +99,7 @@ class Login(Resource):
     parser = reqparse.RequestParser()
 
     parser.add_argument(
-        'username',
+        'email',
         type=str,
         required=True,
         help="Username required"
@@ -78,29 +114,32 @@ class Login(Resource):
     def post(self):
 
         data = Login.parser.parse_args()
-        username = data["username"]
         password = data["password"]
+        email = data["email"]
+        validate_email = re.compile(
+            r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)")
+
+        while True:
+            if not (re.match(validate_email, email)):
+                return {"Message": "Make sure your email is valid"}
+            elif re.search('[a-z]', password) is None:
+                return {"Message": "Make sure your password has a small letter in it"}
+            elif re.search('[0-9]', password) is None:
+                return {"Message": "Make sure your password has a number in it"}
+            elif re.search('[A-Z]', password) is None:
+                return {"Message": "Make sure your password has a capital letter in it"}
+            elif len(password) < 8:
+                return {"Message": "Make sure your password is at lest 8 letters"}
+            else:
+                break
 
         if not users:
             return {'Message': 'No users found'}, 404
 
         for user in users:
-            if username == user['username'] and password == user['password']:
+            if email == user['email'] and password == user['password']:
 
-                return {'User': "Login successfull"}
+                return {'Message': "User loged in successfully"}
 
-            elif (not username or not password):
-
-                return {'Message': 'Fields can\'t be blank'}, 401
-
-            elif (username != user['username'] and password != user['password']):
-
-                return {'Message': 'Invalid credentials'}, 400
-
-            elif (username == user['username'] and password != user['password']):
-
-                return {'Message': 'Invalid credentials for user\'s password'}, 400
-
-            elif (username != user['username'] and password == user['password']):
-
-                return {'Message': 'Invalid credentials'}, 400
+            else:
+                return {'Message': 'Invalid credentials'}

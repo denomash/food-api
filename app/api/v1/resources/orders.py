@@ -3,7 +3,7 @@
 from flask_restful import Resource, reqparse
 
 # local imports
-from ..models import order_data
+from ..models import order_data, get_by_id, is_empty
 
 
 class Get_orders(Resource):
@@ -11,7 +11,7 @@ class Get_orders(Resource):
 
     def get(self):
         """get all orders"""
-        if not order_data:
+        if is_empty(order_data):
             return {'Message': 'No orders found'}, 404
         else:
             return {'Orders': order_data}, 200
@@ -38,7 +38,7 @@ class Orders(Resource):
         'address',
         type=str,
         required=True,
-        help="Price is required"
+        help="Address is required"
     )
     parser.add_argument(
         'quantity',
@@ -56,7 +56,7 @@ class Orders(Resource):
 
         if (len(exist) != 0):
 
-            return {'Message': 'Ordered item alredy exist'}, 400
+            return {'Message': 'Ordered item already exist'}, 400
 
         _id = len(order_data) + 1
 
@@ -101,7 +101,7 @@ class Orderbyid(Resource):
     def get(self, order_id):
         """ get order by id"""
 
-        exist = [order for order in order_data if order['id'] == order_id]
+        exist = get_by_id(order_id)
 
         if not exist:
 
@@ -109,26 +109,30 @@ class Orderbyid(Resource):
 
         else:
 
-            return {'Order': exist[0]}, 200
+            return {'Order': exist}, 200
 
     def put(self, order_id):
         """update order by id"""
 
         data = Orderbyid.parser.parse_args()
-
-        exist = [order for order in order_data if order['id'] == order_id]
+        exist = get_by_id(order_id)
 
         if not exist:
-            return {'Message': 'Invalid order id'}, 404
+
+            return {'Message': 'Invalid order id'}, 400
         else:
-            order.update(data)
-            return exist, 200
+            for order in order_data:
+                if (order_id == order['id']):
+                    order['item'] = data['item']
+                    order['price'] = data['price']
+                    order['quantity'] = data['quantity']
+                    order['address'] = data['address']
+                    return order, 200
 
     def delete(self, order_id):
         """ delete an order """
 
-        order_to_delete = [
-            order for order in order_data if order['id'] == order_id]
+        order_to_delete = get_by_id(order_id)
 
         if not order_to_delete:
 
