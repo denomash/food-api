@@ -5,7 +5,6 @@ from flask_restful import Resource, reqparse
 # local imports
 from ..models import order_data, get_by_id, is_empty
 
-
 class Get_orders(Resource):
     """docstring for Order"""
 
@@ -15,7 +14,6 @@ class Get_orders(Resource):
             return {'Message': 'No orders found'}, 404
         else:
             return {'Orders': order_data}, 200
-
 
 class Orders(Resource):
     """docstring for Orders"""
@@ -72,7 +70,6 @@ class Orders(Resource):
         order_data.append(new_order)
 
         return {'Order': new_order}, 201
-
 
 class Orderbyid(Resource):
     """docstring for Orders by id """

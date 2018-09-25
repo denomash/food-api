@@ -7,17 +7,13 @@ order_data = list()
 users = list()
 
 def get_by_id(order_id):
-	for order in order_data:
-		if order['id'] == order_id:
-			return order
+    for order in order_data:
+        if order['id'] == order_id:
+            return order
+
 
 def is_empty(value):
     if value:
         return False
     else:
         return True
-        
-def get_by_item(order_id):
-	for order in order_data:
-		if order['id'] == data['']:
-			return order

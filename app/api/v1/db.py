@@ -3,18 +3,17 @@
 import psycopg2
 import os
 
-#local imports
+# local imports
 from .fastfood import queries
 
 def db():
 
-    url=os.getenv('DATABASE_URL')
+    url = os.getenv('DATABASE_URL')
 
     # connect using psycopg2
     conn = psycopg2.connect(url)
 
     return conn
-
 
 def init_db():
 
@@ -30,5 +29,3 @@ def init_db():
     except (Exception, psycopg2.DatabaseError) as error:
         print("Database not connected")
         print(error)
-
-   

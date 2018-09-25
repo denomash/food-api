@@ -18,29 +18,45 @@ This is an api for ordering fast food.
 
 ## Installation
 From the reminal clone the repository by running:
+
+
 `git clone https://github.com/denomash/food-api.git`
 
 Switch to the develop branch and run:
+
+
 `git fetch origin develop`
 
 Navigate into the folder by running:
+
+
 `cd food-api`
 
 create a virtual environment by running:
+
+
 `mkvirtualenv env`
 
 then run:
+
+
 `workon env`
 
 Install required packages:
+
+
 `pip install -r requirements.txt`
 
 Then run(each at a time):
+
+
 `export APP_CONFIG=development`
 `export FLASK_APP=run.py`
 `flask run`
 
 How to test:
+
+
 RUN `pytest --cov=app/tests/v1`
 
 Then use postman to test the following endpoints:
