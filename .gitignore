@@ -1,6 +1,6 @@
 env/
 */__pycache__/
-*pyc
+*.pyc
 .pytest_cache
 
 # Ignore test-related files
