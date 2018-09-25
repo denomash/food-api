@@ -5,6 +5,7 @@ from flask_restful import Resource, reqparse
 # local imports
 from ..models import order_data, get_by_id, is_empty
 
+
 class Get_orders(Resource):
     """docstring for Order"""
 
@@ -14,6 +15,7 @@ class Get_orders(Resource):
             return {'Message': 'No orders found'}, 404
         else:
             return {'Orders': order_data}, 200
+
 
 class Orders(Resource):
     """docstring for Orders"""
@@ -42,13 +44,26 @@ class Orders(Resource):
         'quantity',
         type=int,
         required=True,
-        help="Number of food items is required"
+        help="Quantity is required"
     )
 
     def post(self):
         """create new order"""
 
         data = Orders.parser.parse_args()
+        item = data["item"]
+        price = data["price"]
+        quantity = data["quantity"]
+        address = data["address"]
+
+        if not item:
+            return {'Message': 'Food item field is required'}
+        if not price:
+            return {'Message': 'Price field is required'}
+        if not address:
+            return {'Message': 'Address field is required'}
+        if not quantity:
+            return {'Message': 'Quantity field is required'}
 
         exist = [order for order in order_data if order['item'] == data['item']]
 
@@ -64,12 +79,13 @@ class Orders(Resource):
             'price': data['price'],
             'quantity': data['quantity'],
             'address': data['address'],
-            'delivered': False
+            'status': 'pending'
         }
 
         order_data.append(new_order)
 
         return {'Order': new_order}, 201
+
 
 class Orderbyid(Resource):
     """docstring for Orders by id """
@@ -77,22 +93,8 @@ class Orderbyid(Resource):
     parser = reqparse.RequestParser()
 
     parser.add_argument(
-        'item',
+        'status',
         type=str
-    )
-    parser.add_argument(
-        'price',
-        type=float
-    )
-    parser.add_argument(
-        'address',
-        type=str,
-        required=True,
-        help="Price is required"
-    )
-    parser.add_argument(
-        'quantity',
-        type=int
     )
 
     def get(self, order_id):
@@ -120,10 +122,7 @@ class Orderbyid(Resource):
         else:
             for order in order_data:
                 if (order_id == order['id']):
-                    order['item'] = data['item']
-                    order['price'] = data['price']
-                    order['quantity'] = data['quantity']
-                    order['address'] = data['address']
+                    order['status'] = data['status']
                     return order, 200
 
     def delete(self, order_id):

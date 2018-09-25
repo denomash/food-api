@@ -27,13 +27,13 @@ class Register(Resource):
         'password',
         type=str,
         required=True,
-        help="Number of food items is required"
+        help="Password is required"
     )
     parser.add_argument(
         'confirm password',
         type=str,
         required=True,
-        help="Number of food items is required"
+        help="Confirm password is required"
     )
 
     def post(self):
@@ -41,9 +41,19 @@ class Register(Resource):
 
         data = Register.parser.parse_args()
 
+        username = data["username"]
         email = data["email"]
         password = data["password"]
         confirm_password = data["confirm password"]
+
+        if not username:
+            return {'Message' : 'Username field is required'}
+        if not email:
+            return {'Message' : 'Email field is required'}
+        if not password:
+            return {'Message' : 'Password field is required'}
+        if not confirm_password:
+            return {'Message' : 'Confirm password field is required'}
 
         while True:
             if not re.match(r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)", email):
@@ -65,7 +75,7 @@ class Register(Resource):
 
         if (len(exist) != 0):
 
-            return {'Message': 'email alredy exist'}, 400
+            return {'Message': 'email already exist'}, 400
 
         user = {
             'username': data['username'],
@@ -103,6 +113,11 @@ class Login(Resource):
         email = data["email"]
         validate_email = re.compile(
             r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)")
+
+        if not email:
+            return {'Message' : 'Email field is required'}
+        if not password:
+            return {'Message' : 'Password field is required'}
 
         while True:
             if not (re.match(validate_email, email)):
