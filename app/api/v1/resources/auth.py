@@ -96,8 +96,7 @@ class Login(Resource):
         help="Password is required"
     )
 
-    @classmethod
-    def post(self, cls):
+    def post(self):
 
         data = Login.parser.parse_args()
         password = data["password"]

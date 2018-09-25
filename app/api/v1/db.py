@@ -6,7 +6,6 @@ import os
 # local imports
 from .fastfood import queries
 
-
 def db():
 
     url = os.getenv('DATABASE_URL')
@@ -15,7 +14,6 @@ def db():
     conn = psycopg2.connect(url)
 
     return conn
-
 
 def init_db():
 

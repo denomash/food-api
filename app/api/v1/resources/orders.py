@@ -5,17 +5,15 @@ from flask_restful import Resource, reqparse
 # local imports
 from ..models import order_data, get_by_id, is_empty
 
-
 class Get_orders(Resource):
     """docstring for Order"""
-    @classmethod
-    def get(self, cls):
+
+    def get(self):
         """get all orders"""
         if is_empty(order_data):
             return {'Message': 'No orders found'}, 404
         else:
             return {'Orders': order_data}, 200
-
 
 class Orders(Resource):
     """docstring for Orders"""
@@ -47,8 +45,7 @@ class Orders(Resource):
         help="Number of food items is required"
     )
 
-    @classmethod
-    def post(self, cls):
+    def post(self):
         """create new order"""
 
         data = Orders.parser.parse_args()
@@ -74,7 +71,6 @@ class Orders(Resource):
 
         return {'Order': new_order}, 201
 
-
 class Orderbyid(Resource):
     """docstring for Orders by id """
 
@@ -99,8 +95,7 @@ class Orderbyid(Resource):
         type=int
     )
 
-    @classmethod
-    def get(self, order_id, cls):
+    def get(self, order_id):
         """ get order by id"""
 
         exist = get_by_id(order_id)
@@ -113,8 +108,7 @@ class Orderbyid(Resource):
 
             return {'Order': exist}, 200
 
-    @classmethod
-    def put(self, order_id, cls):
+    def put(self, order_id):
         """update order by id"""
 
         data = Orderbyid.parser.parse_args()
@@ -132,8 +126,7 @@ class Orderbyid(Resource):
                     order['address'] = data['address']
                     return order, 200
 
-    @classmethod
-    def delete(self, order_id, cls):
+    def delete(self, order_id):
         """ delete an order """
 
         order_to_delete = get_by_id(order_id)
