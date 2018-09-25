@@ -94,7 +94,8 @@ class Orderbyid(Resource):
 
     parser.add_argument(
         'status',
-        type=str
+        type=str,
+        help="Status is required"
     )
 
     def get(self, order_id):
@@ -114,11 +115,15 @@ class Orderbyid(Resource):
         """update order by id"""
 
         data = Orderbyid.parser.parse_args()
+        status = data['status']
         exist = get_by_id(order_id)
 
         if not exist:
-
             return {'Message': 'Invalid order id'}, 400
+        elif not status:
+            return {'Message': 'Status can\'t be empty'}
+        elif status not in ('pending', 'completed'):
+            return {'Message': 'Status must be either pending or completed'}
         else:
             for order in order_data:
                 if (order_id == order['id']):
