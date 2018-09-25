@@ -57,7 +57,7 @@ Then run(each at a time):
 How to test:
 
 
-RUN `pytest --cov=app/tests/v1`
+RUN `pytest --cov=app/tests/`
 
 Then use postman to test the following endpoints:
 
