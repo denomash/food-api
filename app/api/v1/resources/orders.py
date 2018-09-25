@@ -57,13 +57,13 @@ class Orders(Resource):
         address = data["address"]
 
         if not item:
-            return {'Message': 'Food item field is required'}
+            return {'Message': 'Food item field is required'}, 400
         if not price:
-            return {'Message': 'Price field is required'}
+            return {'Message': 'Price field is required'}, 400
         if not address:
-            return {'Message': 'Address field is required'}
+            return {'Message': 'Address field is required'}, 400
         if not quantity:
-            return {'Message': 'Quantity field is required'}
+            return {'Message': 'Quantity field is required'}, 400
 
         exist = [order for order in order_data if order['item'] == data['item']]
 
@@ -121,9 +121,9 @@ class Orderbyid(Resource):
         if not exist:
             return {'Message': 'Invalid order id'}, 400
         elif not status:
-            return {'Message': 'Status can\'t be empty'}
+            return {'Message': 'Status can\'t be empty'}, 400
         elif status not in ('pending', 'completed'):
-            return {'Message': 'Status must be either pending or completed'}
+            return {'Message': 'Status must be either pending or completed'}, 400
         else:
             for order in order_data:
                 if (order_id == order['id']):
@@ -141,5 +141,5 @@ class Orderbyid(Resource):
 
         else:
 
-            order_data.remove(order_to_delete[0])
-            return {'Order': 'Order deleted'}, 200
+            order_data.remove(order_to_delete)
+            return {'Message': 'Order deleted'}, 200

@@ -115,9 +115,9 @@ class Login(Resource):
             r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)")
 
         if not email:
-            return {'Message' : 'Email field is required'}
+            return {'Message' : 'Email field is required'}, 400
         if not password:
-            return {'Message' : 'Password field is required'}
+            return {'Message' : 'Password field is required'}, 400
 
         while True:
             if not (re.match(validate_email, email)):
