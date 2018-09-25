@@ -56,7 +56,6 @@ class Order_tests(unittest.TestCase):
             'status': ''
         }
 
-
     def test_404_get_all_orders(self):
         """ test 404 if order found"""
         response = self.client.get(
@@ -122,9 +121,10 @@ class Order_tests(unittest.TestCase):
         """test 400 if status has wrong status value"""
         order_data.append(self.order)
         response = self.client.put(
-            '/api/v1/orders/1', data=json.dumps(self.order4), content_type='application/json')        
+            '/api/v1/orders/1', data=json.dumps(self.order4), content_type='application/json')
         res = json.loads(response.data.decode())
-        self.assertEqual(res['Message'], "Status must be either pending or completed")
+        self.assertEqual(
+            res['Message'], "Status must be either pending or completed")
         self.assertEqual(response.status_code, 400)
 
     def test_400_update_endpoint_status_value_empty(self):
