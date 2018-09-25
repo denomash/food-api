@@ -1,6 +1,6 @@
 # app/__init__.py
 
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, render_template
 from flask_restful import Api
 
 # local imports
@@ -27,6 +27,12 @@ def create_app(configuration_name):
 
     # register blueprints
     app.register_blueprint(api_blueprint, url_prefix='/api/v1')
+
+    # base route
+    @app.route('/')
+    def index():
+        """base route"""
+        return render_template('index.html')
 
     return app
 
