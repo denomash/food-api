@@ -8,8 +8,8 @@ from ..models import order_data, get_by_id, is_empty
 
 class Get_orders(Resource):
     """docstring for Order"""
-
-    def get(self):
+    @classmethod
+    def get(self, cls):
         """get all orders"""
         if is_empty(order_data):
             return {'Message': 'No orders found'}, 404
@@ -47,7 +47,8 @@ class Orders(Resource):
         help="Number of food items is required"
     )
 
-    def post(self):
+    @classmethod
+    def post(self, cls):
         """create new order"""
 
         data = Orders.parser.parse_args()
@@ -98,7 +99,8 @@ class Orderbyid(Resource):
         type=int
     )
 
-    def get(self, order_id):
+    @classmethod
+    def get(self, order_id, cls):
         """ get order by id"""
 
         exist = get_by_id(order_id)
@@ -111,7 +113,8 @@ class Orderbyid(Resource):
 
             return {'Order': exist}, 200
 
-    def put(self, order_id):
+    @classmethod
+    def put(self, order_id, cls):
         """update order by id"""
 
         data = Orderbyid.parser.parse_args()
@@ -129,7 +132,8 @@ class Orderbyid(Resource):
                     order['address'] = data['address']
                     return order, 200
 
-    def delete(self, order_id):
+    @classmethod
+    def delete(self, order_id, cls):
         """ delete an order """
 
         order_to_delete = get_by_id(order_id)
