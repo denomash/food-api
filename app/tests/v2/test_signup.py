@@ -5,7 +5,6 @@ import json
 
 from ... import create_app
 
-
 class Signup_tests(unittest.TestCase):
     """docstring for Order_tests"""
 
@@ -91,7 +90,7 @@ class Signup_tests(unittest.TestCase):
             '/api/v1/signup', data=json.dumps(self.user6), content_type='application/json')
         self.assertEqual(response.status_code, 400)
 
-    def test_400_if_confirm_password_march(self):
+    def test_400_if_confirm_password_match(self):
         """ test 400 if password confirm password match"""
         response = self.client.post(
             '/api/v1/signup', data=json.dumps(self.user7), content_type='application/json')
