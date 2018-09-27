@@ -1,17 +1,37 @@
-# app/api/tests/v2/test_signup.py
+# app/tests/v2/test_orders.py
 
 import unittest
+import os
 import json
+import psycopg2
 
 from ... import create_app
+from ...api.v2.fastfood import queries
 
 
-class Signup_tests(unittest.TestCase):
-    """docstring for Order_tests"""
+class TestDB(unittest.TestCase):
+    """This class represents the bucketlist test case"""
 
     def setUp(self):
+        """Define test variables and initialize app."""
         app = create_app('testing')
         self.client = app.test_client()
+
+        try:
+            self.conn = psycopg2.connect(
+                'dbname=test_db user=test password=test host=localhost')
+            self.cur = self.conn.cursor()
+            self.conn.autocommit = True
+
+            # activate connection cursor
+            self.cur = self.conn.cursor()
+            for query in queries:
+                self.cur.execute(query)
+                self.conn.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Database not connected")
+            print(error)
+
         self.user = {
             'username': 'deno',
             'email': 'deno@gmail.com',
@@ -97,5 +117,23 @@ class Signup_tests(unittest.TestCase):
             '/api/v1/signup', data=json.dumps(self.user7), content_type='application/json')
         self.assertEqual(response.status_code, 400)
 
-if __name__ == '__main__':
+    def tearDown(self):
+        """teardown all initialized variables."""
+        try:
+            self.conn = psycopg2.connect(
+                'dbname=test_db user=test password=test host=localhost')
+            self.conn.autocommit = True
+
+            # activate connection cursor
+            self.cur = self.conn.cursor()
+            self.cur.execute("DROP DATABASE test_db")
+            self.conn.commit()
+
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Database not connected")
+            print(error)
+
+
+# Make the tests conveniently executable
+if __name__ == "__main__":
     unittest.main()
