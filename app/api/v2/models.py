@@ -1,8 +1,4 @@
-# initialize data structure for users
-users = list()
-
-# initialize data structure for users
-foods = list()
+#app/api/v2/models.py
 
 def get_by_id(order_id):
     for order in order_data:
