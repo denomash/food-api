@@ -8,24 +8,6 @@ from ..db import db
 from ..models import get_by_id, is_empty
 
 
-class Get_ordersv2(Resource):
-    """get all orders"""
-
-    def get(self):
-        """get all orders"""
-        try:
-            conn = db()
-            cur = conn.cursor()
-            cur.execute("SELECT * from orders")
-            orders = cur.fetchall()
-
-            return {"Message": orders}
-        except (Exception, psycopg2.DatabaseError) as error:
-            cur.execute("rollback;")
-            print(error)
-            return {'Message': 'current transaction is aborted'}, 500
-
-
 class Ordersv2(Resource):
     """post an order"""
 
@@ -56,10 +38,24 @@ class Ordersv2(Resource):
         help="Quantity is required"
     )
 
+    def get(self):
+        """get all orders"""
+        try:
+            conn = db()
+            cur = conn.cursor()
+            cur.execute("SELECT * from orders")
+            orders = cur.fetchall()
+
+            return {"Message": orders}
+        except (Exception, psycopg2.DatabaseError) as error:
+            cur.execute("rollback;")
+            print(error)
+            return {'Message': 'current transaction is aborted'}, 500
+
     def post(self):
         """create new order"""
 
-        data = Orders.parser.parse_args()
+        data = Ordersv2.parser.parse_args()
         item = data["item"]
         price = data["price"]
         quantity = data["quantity"]
