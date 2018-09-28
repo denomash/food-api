@@ -26,7 +26,7 @@ class Menu(Resource):
         help="Image is required"
     )
 
-    def get(self):
+    def get(current_user, self):
         """get all foods"""
 
         try:
@@ -43,36 +43,3 @@ class Menu(Resource):
             cur.execute("rollback;")
             print(error)
             return {'Message': 'current transaction is aborted'}, 500
-
-    def post(self):
-
-        data = Menu.parser.parse_args()
-        item = data["item"]
-        price = data["price"]
-        image = data["image"]
-
-        if not item:
-            return {'Message': 'Food item field is required'}, 400
-        if not price:
-            return {'Message': 'Price field is required'}, 400
-        if not image:
-            return {'Message': 'Image field is required'}, 400
-
-        exist = [food for food in foods if food['item'] == data['item']]
-
-        if (len(exist) != 0):
-
-            return {'Message': 'Food item already exist'}, 400
-
-        _id = len(foods) + 1
-
-        new_food = {
-            'id': _id,
-            'item': data['item'],
-            'price': data['price'],
-            'image': data['image']
-        }
-
-        foods.append(new_food)
-
-        return {'Order': new_food}, 201

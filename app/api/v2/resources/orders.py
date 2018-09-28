@@ -5,7 +5,6 @@ import psycopg2
 
 # local imports
 from ..db import db
-from ..models import get_by_id, is_empty
 
 
 class Ordersv2(Resource):
@@ -43,7 +42,8 @@ class Ordersv2(Resource):
         try:
             conn = db()
             cur = conn.cursor()
-            cur.execute("SELECT * from orders WHERE user_id=%(id)s", {'id': data["id"]})                        
+            cur.execute("SELECT * from orders WHERE user_id=%(id)s",
+                        {'id': data["id"]})
             orders = cur.fetchall()
 
             return {"Message": orders}
