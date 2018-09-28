@@ -1,7 +1,43 @@
 # app/api/v2/resources/food.py
 
+from flask import request
 from flask_restful import Resource, reqparse
+import jwt
+import psycopg2
+import psycopg2.extras
+
+
 from ..db import db
+from functools import wraps
+
+
+def check_auth(f):
+
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+
+        if 'x-access-token' in request.headers:
+            token = request.headers['x-access-token']
+
+        if not token:
+            return {'message': 'You don\'t have a token!'}, 401
+
+        try:
+            data = jwt.decode(token, 'secret')
+            conn = db()
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+            cur.execute("SELECT * FROM users WHERE id = %(id)s ",
+                        {'id': data["id"]})
+            current_user = cur.fetchone()
+
+        except:
+            return {'message': 'Invalid token!'}, 401
+
+        return f(current_user, *args, **kwargs)
+
+    return decorated
 
 
 class Menu(Resource):
@@ -20,18 +56,18 @@ class Menu(Resource):
         help="Price is required"
     )
     parser.add_argument(
-        'image',
+        'description',
         type=str,
         required=True,
-        help="Image is required"
+        help="Description is required"
     )
 
-    def get(current_user, self):
+    def get(self):
         """get all foods"""
 
         try:
             conn = db()
-            cur = conn.cursor()
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
             cur.execute("SELECT * from meals")
             meals = cur.fetchall()
 
@@ -39,6 +75,44 @@ class Menu(Resource):
                 return {"Meals": "No meals found"}, 404
 
             return {"Meals": meals}
+        except (Exception, psycopg2.DatabaseError) as error:
+            cur = conn.cursor()
+            cur.execute("rollback;")
+            print(error)
+            return {'Message': 'current transaction is aborted'}, 500
+
+    @check_auth
+    def post(current_user, self):
+        """add a food item"""
+        if current_user["type"] != "admin":
+            return {"Message": "Must be an admin"}
+
+        data = Menu.parser.parse_args()
+        item = data["item"]
+        price = data["price"]
+        description = data["description"]
+
+        if not item:
+            return {'Message': 'Food item field is required'}, 400
+        if not price:
+            return {'Message': 'Price field is required'}, 400
+        if not description:
+            return {'Message': 'Description field is required'}, 400
+
+        try:
+            conn = db()
+            cur = conn.cursor()
+
+            cur.execute("SELECT * FROM meals WHERE food = %(food)s",
+                        {'food': data['item']})
+
+            # check if order exist
+            if cur.fetchone() is not None:
+                return {'Message': 'Food already exist'}
+            cur.execute("INSERT INTO meals (food, price, description) VALUES (%(food)s, %(price)s, %(description)s);", {
+                'food': data["item"], 'price': data["price"], 'description': data["description"]})
+            conn.commit()
+            return {'Message': 'Meal created successfully'}, 201
         except (Exception, psycopg2.DatabaseError) as error:
             cur.execute("rollback;")
             print(error)

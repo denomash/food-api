@@ -1,7 +1,7 @@
 # app/api/v1/resources/orders.py
 
 from flask_restful import Resource, reqparse
-import psycopg2
+import psycopg2, psycopg2.extras
 
 # local imports
 from ..db import db
@@ -41,9 +41,8 @@ class Ordersv2(Resource):
         """get all orders"""
         try:
             conn = db()
-            cur = conn.cursor()
-            cur.execute("SELECT * from orders WHERE user_id=%(id)s",
-                        {'id': data["id"]})
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            cur.execute("SELECT * from orders")
             orders = cur.fetchall()
 
             return {"Message": orders}
@@ -72,7 +71,7 @@ class Ordersv2(Resource):
 
         try:
             conn = db()
-            cur = conn.cursor()
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
             cur.execute("SELECT * FROM orders WHERE food = %(food)s",
                         {'food': data['item']})
@@ -139,7 +138,7 @@ class EditOrder(Resource):
 
         try:
             conn = db()
-            cur = conn.cursor()
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
             cur.execute("SELECT * FROM orders WHERE order_id = %(order_id)s",
                         {'order_id': order_id})
