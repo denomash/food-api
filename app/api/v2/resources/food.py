@@ -1,43 +1,15 @@
 # app/api/v2/resources/food.py
 
-from flask import request
+
 from flask_restful import Resource, reqparse
 import jwt
 import psycopg2
 import psycopg2.extras
-
-
-from ..db import db
 from functools import wraps
 
-
-def check_auth(f):
-
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
-
-        if not token:
-            return {'message': 'You don\'t have a token!'}, 401
-
-        try:
-            data = jwt.decode(token, 'secret')
-            conn = db()
-            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
-            cur.execute("SELECT * FROM users WHERE id = %(id)s ",
-                        {'id': data["id"]})
-            current_user = cur.fetchone()
-
-        except:
-            return {'message': 'Invalid token!'}, 401
-
-        return f(current_user, *args, **kwargs)
-
-    return decorated
+# local imports
+from ..db import db
+from ..checkauth import check_auth
 
 
 class Menu(Resource):
@@ -62,7 +34,8 @@ class Menu(Resource):
         help="Description is required"
     )
 
-    def get(self):
+    @check_auth
+    def get(current_user, self):
         """get all foods"""
 
         try:
