@@ -1,10 +1,13 @@
 # app/api/v2/resources/auth.py
 
 from flask_restful import Resource, reqparse
+from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import re
 import psycopg2
+import psycopg2.extras
 import datetime
+
 
 # local imports
 from ..db import db
@@ -73,15 +76,19 @@ class Registerv2(Resource):
             conn = db()
             cur = conn.cursor()
 
+            # check if user email exist
             cur.execute("SELECT * FROM users WHERE email = %(email)s",
                         {'email': data["email"]})
-            # check if user email exist
 
             if cur.fetchone() is not None:
                 return {'Message': 'User already exists'}, 400
 
+            # hash password
+            hashed_password = generate_password_hash(
+                data['password'], method='sha256')
+
             cur.execute("INSERT INTO users (email, username, type, password) VALUES (%(email)s, %(username)s, %(type)s, %(password)s);", {
-                'email': data['email'], 'username': data['username'], 'type': 'client', 'password': data['password']})
+                'email': data['email'], 'username': data['username'], 'type': 'client', 'password': hashed_password})
 
             conn.commit()
 
@@ -139,21 +146,25 @@ class LoginV2(Resource):
 
         try:
             conn = db()
-            cur = conn.cursor()
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-            cur.execute("SELECT * FROM users WHERE email = %(email)s and password = %(password)s",
-                        {'email': data["email"], 'password': data['password']})
-            # check if user email exist
+            cur.execute("SELECT * FROM users WHERE email = %(email)s ",
+                        {'email': data["email"]})
+            res = cur.fetchone()
 
-            user = cur.fetchone()
-
-            if user is None:
-                return {'Message': 'Invalid credentials'}, 400
+            if res is None:
+                return {'Message': 'User email does not exist'}, 404
             else:
-                token = jwt.encode({'id': user[0], 'exp': datetime.datetime.utcnow(
-                ) + datetime.timedelta(minutes=30)}, 'secret')
-                return {'token': token.decode('UTF-8')}
-                return {'Message': 'User logged in successfully'}, 200
+                checked_password = check_password_hash(
+                    res['password'], password)
+
+                if checked_password == True:
+                    token = jwt.encode({'id': res['id'], 'exp': datetime.datetime.utcnow(
+                    ) + datetime.timedelta(minutes=30)}, 'secret')
+
+                    return {'token': token.decode('UTF-8')}, 200
+
+                return {'Message': 'Invalid credentials'}, 400
         except (Exception, psycopg2.DatabaseError) as error:
             cur.execute("rollback;")
             print(error)
