@@ -62,49 +62,49 @@ class TestDB(unittest.TestCase):
     def test_201_place_new_order(self):
         """ test 201 for posting an order successfully"""
         response = self.client.post(
-            '/api/v1/orders', data=json.dumps(self.order), content_type='application/json')
+            '/api/v2/orders', data=json.dumps(self.order), content_type='application/json')
         self.assertEqual(response.status_code, 201)
 
     def test_400_place_new_order_less_item(self):
         """test 400 if order has no item"""
         response = self.client.post(
-            '/api/v1/orders', data=json.dumps(self.order2), content_type='application/json')
+            '/api/v2/orders', data=json.dumps(self.order2), content_type='application/json')
         self.assertEqual(response.status_code, 400)
 
     def test_400_place_new_order_less_price(self):
         """test 400 if order has no price"""
         response = self.client.post(
-            '/api/v1/orders', data=json.dumps(self.order3), content_type='application/json')
+            '/api/v2/orders', data=json.dumps(self.order3), content_type='application/json')
         self.assertEqual(response.status_code, 400)
 
     def test_400_place_new_order_less_address(self):
         """test 400 if order has no address"""
         response = self.client.post(
-            '/api/v1/orders', data=json.dumps(self.order4), content_type='application/json')
+            '/api/v2/orders', data=json.dumps(self.order4), content_type='application/json')
         self.assertEqual(response.status_code, 400)
 
     def test_400_place_new_order_less_quantity(self):
         """test 400 if order has no quantity"""
         response = self.client.post(
-            '/api/v1/orders', data=json.dumps(self.order5), content_type='application/json')
+            '/api/v2/orders', data=json.dumps(self.order5), content_type='application/json')
         self.assertEqual(response.status_code, 400)
 
     def test_200_get_order_with_order_id(self):
         """test 200 if order has a valid id"""
         response = self.client.get(
-            '/api/v1/orders/1', content_type='application/json')
+            '/api/v2/orders/1', content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
     def test_200_update_endpoint(self):
         """test 200 if order updated successfully"""
         response = self.client.put(
-            '/api/v1/orders/1', data=json.dumps(self.order), content_type='application/json')
+            '/api/v2/orders/1', data=json.dumps(self.order), content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
     
     def test_400_update_endpoint_status_value_empty(self):
         response = self.client.put(
-            '/api/v1/orders/1', data=json.dumps(self.order9), content_type='application/json')
+            '/api/v2/orders/1', data=json.dumps(self.order9), content_type='application/json')
         res = json.loads(response.data.decode())
         self.assertEqual(res['Message'], "Status can\'t be empty")
         self.assertEqual(response.status_code, 400)
@@ -112,7 +112,7 @@ class TestDB(unittest.TestCase):
     def test_200_delete_endpoint(self):
         """test 200 if order deleted successfully"""
         response = self.client.delete(
-            '/api/v1/orders/1', content_type='application/json')
+            '/api/v2/orders/1', content_type='application/json')
         res = json.loads(response.data.decode())
         self.assertEqual(res['Message'], "Order deleted")
         self.assertEqual(response.status_code, 200)
@@ -120,13 +120,12 @@ class TestDB(unittest.TestCase):
     def tearDown(self):
         """teardown all initialized variables."""
         try:
-            self.conn = psycopg2.connect(
-                'dbname=test_db user=test password=test host=localhost')
+            self.conn = psycopg2.connect(os.getenv('TEST_DB_URL'))
             self.conn.autocommit = True
 
             # activate connection cursor
             self.cur = self.conn.cursor()
-            self.cur.execute("DROP DATABASE test_db")
+            self.cur.execute("DROP TABLE IF EXISTS orders")
             self.conn.commit()
 
         except (Exception, psycopg2.DatabaseError) as error:
