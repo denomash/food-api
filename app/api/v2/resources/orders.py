@@ -54,6 +54,8 @@ class EditOrderv2(Resource):
 
         if not status:
             return {'Message': 'Status can\'t be empty'}, 400
+        elif status not in ('pending', 'completed'):
+            return {'Message': 'Status must be either pending or completed'}, 400
 
         try:
             conn = db()
