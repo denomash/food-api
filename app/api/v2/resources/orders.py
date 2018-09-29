@@ -153,8 +153,8 @@ class UserOrder(Resource):
 
             # check if order exist
             res = cur.fetchone()
-            if res is not None:
-                return {'Message': 'Order already exist'}
+            if res is None:
+                return {'Message': 'Meal does not exist'}
 
             cur.execute("INSERT INTO orders (user_id, meal_id, quantity, address, status) VALUES (%(user_id)s, %(meal_id)s, %(quantity)s, %(address)s, %(status)s)", {
                 'user_id': user_id, 'meal_id': meal_id, 'quantity': quantity, 'address': address, 'status': status})
