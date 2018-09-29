@@ -18,8 +18,7 @@ class TestDB(unittest.TestCase):
         self.client = app.test_client()
 
         try:
-            self.conn = psycopg2.connect(
-                'dbname=test_db user=test password=test host=localhost')
+            self.conn = psycopg2.connect(os.getenv('TEST_DB_URL'))
             self.cur = self.conn.cursor()
             self.conn.autocommit = True
 
