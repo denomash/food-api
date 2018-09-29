@@ -15,6 +15,8 @@ class Promote(Resource):
 
     @check_auth
     def post(current_user, self, order_id):
+        if current_user["type"] != "admin":
+            return {"Message": "Must be an admin"}
         parser = reqparse.RequestParser()
 
         parser.add_argument(
@@ -31,21 +33,21 @@ class Promote(Resource):
         if not user_type:
             return {"Message": "Type to promote can\'t be blank"}
         elif user_type not in ('admin', 'client'):
-        	return {"Message":"Type must either be client or admin"}
+            return {"Message": "Type must either be client or admin"}
 
         try:
             conn = db()
             cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
             cur.execute("SELECT * FROM users WHERE id=%(order_id)s",
-                         {'order_id': order_id})
+                        {'order_id': order_id})
 
             res = cur.fetchone()
             if res is None:
                 return {"Message": "User with the id does not exist"}
 
             cur.execute("UPDATE users SET type=%s WHERE id=%s;",
-                         (user_type, order_id))
+                        (user_type, order_id))
 
             conn.commit()
             user = {}
