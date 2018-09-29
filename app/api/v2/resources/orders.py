@@ -164,3 +164,26 @@ class UserOrder(Resource):
             cur.execute("rollback;")
             print(error)
             return {'Message': 'current transaction is aborted'}, 500
+
+    @check_auth
+    def get(current_user, self):
+        """user can get order history"""
+
+        try:
+            conn = db()
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+            cur.execute("SELECT * FROM orders WHERE user_id = %(user_id)s",
+                        {'user_id': current_user['id']})
+            print(current_user['id'])
+
+            # check if order exist
+            res = cur.fetchall()
+            if not res:
+                return {'Message': 'No order history'}, 404
+
+            return {'Message': res}, 200
+        except (Exception, psycopg2.DatabaseError) as error:
+            cur.execute("rollback;")
+            print(error)
+            return {'Message': 'current transaction is aborted'}, 500
