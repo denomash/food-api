@@ -39,8 +39,8 @@ class Promote(Resource):
             conn = db()
             cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-            cur.execute("SELECT * FROM users WHERE id=%(order_id)s",
-                        {'order_id': order_id})
+            cur.execute("SELECT * FROM users WHERE id=%(user_id)s",
+                        {'user_id': user_id})
 
             res = cur.fetchone()
             if res is None:
