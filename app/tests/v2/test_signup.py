@@ -6,7 +6,7 @@ import json
 import psycopg2
 
 from ... import create_app
-from ...api.v2.fastfood import queries
+from ...api.v2.db import testdb
 
 
 class TestDB(unittest.TestCase):
@@ -59,6 +59,9 @@ class TestDB(unittest.TestCase):
             'password': 'aA1234567',
             'confirm password': 'aA123456'
         }
+
+        with self.app.app_context():
+            self.db = testdb()
 
     def test_201_successful_signup(self):
         """ test 201 for successfull signup"""
