@@ -37,7 +37,7 @@ def create_app(configuration_name):
     def index():
         """base route"""
         return render_template('index.html')
-
+      
     return app
 
 # Resourses

@@ -42,8 +42,7 @@ class Promote(Resource):
             res = cur.fetchone()
             if res is None:
                 return {"Message": "User with the id does not exist"}
-            cur.execute("UPDATE users SET type=%s WHERE id=%s;",
-                        (user_type, user_id))            
+            cur.execute("UPDATE users SET type=%s WHERE id=%s;", (user_type, user_id))
             conn.commit()
             user = {}
             user['id'] = res['id']
