@@ -14,7 +14,7 @@ class TestDB(unittest.TestCase):
 
     def setUp(self):
         """Define test variables and initialize app."""
-        app = create_app('testing')
+        self.app = create_app('testing')
         self.client = app.test_client()
 
         self.user = {
