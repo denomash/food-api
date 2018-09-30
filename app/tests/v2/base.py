@@ -8,7 +8,7 @@ class TestDb(unittest.TestCase):
 
     def setUp(self):
         from app import create_app
-        self.app = create_app()
+        self.app = create_app('testing')
         self.client = self.app.test_client()
 
         with self.app.app_context():
