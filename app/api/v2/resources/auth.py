@@ -42,19 +42,13 @@ class Registerv2(Resource):
 
         data = Registerv2.parser.parse_args()
 
-        username = data["username"]
         email = data["email"]
         password = data["password"]
-        confirm_password = data["confirm password"]
 
-        if not username:
-            return {'Message': 'Username field is required'}
         if not email:
-            return {'Message': 'Email field is required'}
+            return {'Message': 'Email field is required'}, 400
         if not password:
-            return {'Message': 'Password field is required'}
-        if not confirm_password:
-            return {'Message': 'Confirm password field is required'}
+            return {'Message': 'Password field is required'}, 400
 
         while True:
             if not re.match(r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)", email):
@@ -81,15 +75,78 @@ class Registerv2(Resource):
             # check if user email exist
 
             if cur.fetchone() is not None:
-                return {'Message': 'User already exists'}
+                return {'Message': 'User already exists'}, 400
 
             cur.execute("INSERT INTO users (email, username, password, confirm_password) VALUES (%(email)s, %(username)s, %(password)s, %(confirm_password)s);", {
                 'email': data['email'], 'username': data['username'], 'password': data['password'], 'confirm_password': data['confirm password']})
 
             conn.commit()
 
-            return {'Message': 'New user created'}
+            return {'Message': 'New user created'}, 201
         except (Exception, psycopg2.DatabaseError) as error:
             cur.execute("rollback;")
             print(error)
-            return {'Message': 'current transaction is aborted'}
+            return {'Message': 'current transaction is aborted'}, 500
+
+
+class LoginV2(Resource):
+    """docstring for Login"""
+
+    parser = reqparse.RequestParser()
+
+    parser.add_argument(
+        'email',
+        type=str,
+        required=True,
+        help="Email required"
+    )
+    parser.add_argument(
+        'password',
+        type=str,
+        required=True,
+        help="Password is required"
+    )
+
+    def post(self):
+
+        data = LoginV2.parser.parse_args()
+        password = data["password"]
+        email = data["email"]
+        validate_email = re.compile(
+            r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)")
+
+        if not email:
+            return {'Message': 'Email field is required'}, 400
+        if not password:
+            return {'Message': 'Password field is required'}, 400
+
+        while True:
+            if not (re.match(validate_email, email)):
+                return {"Message": "Make sure your email is valid"}, 400
+            elif re.search('[a-z]', password) is None:
+                return {"Message": "Make sure your password has a small letter in it"}, 400
+            elif re.search('[0-9]', password) is None:
+                return {"Message": "Make sure your password has a number in it"}, 400
+            elif re.search('[A-Z]', password) is None:
+                return {"Message": "Make sure your password has a capital letter in it"}, 400
+            elif len(password) < 8:
+                return {"Message": "Make sure your password is at lest 8 letters"}, 400
+            else:
+                break
+
+        try:
+            conn = db()
+            cur = conn.cursor()
+
+            cur.execute("SELECT * FROM users WHERE email = %(email)s and password = %(password)s",
+                        {'email': data["email"], 'password': data['password']})
+            # check if user email exist
+
+            if cur.fetchone() is None:
+                return {'Message': 'Invalid credentials'}, 400
+            else:
+                return {'Message': 'User logged in successfully'}, 200
+        except (Exception, psycopg2.DatabaseError) as error:
+            cur.execute("rollback;")
+            print(error)
+            return {'Message': 'current transaction is aborted'}, 500
