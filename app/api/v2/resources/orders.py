@@ -72,7 +72,6 @@ class EditOrderv2(Resource):
             cur.execute("UPDATE  orders SET status=%(status)s WHERE order_id=%(order_id)s",
                         {'status': status, 'order_id': order_id})
             conn.commit()
-            
 
             return {'Message': 'Order status updated'}, 200
         except (Exception, psycopg2.DatabaseError) as error:
