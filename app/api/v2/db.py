@@ -1,4 +1,4 @@
-# app/api/v1/db.py
+# app/api/v2/db.py
 
 import psycopg2
 import os

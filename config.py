@@ -14,6 +14,8 @@ class Development_config(Config):
 
 class Testing_config(Config):
     """Configuration for testing environment"""
+    TESTING = True
+    DATABASE_URL = 'dbname=test_db user=test password=test host=localhost'
     DEBUG = True
 
 

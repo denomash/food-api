@@ -47,13 +47,13 @@ class Register(Resource):
         confirm_password = data["confirm password"]
 
         if not username:
-            return {'Message' : 'Username field is required'}
+            return {'Message': 'Username field is required'}
         if not email:
-            return {'Message' : 'Email field is required'}
+            return {'Message': 'Email field is required'}
         if not password:
-            return {'Message' : 'Password field is required'}
+            return {'Message': 'Password field is required'}
         if not confirm_password:
-            return {'Message' : 'Confirm password field is required'}
+            return {'Message': 'Confirm password field is required'}
 
         while True:
             if not re.match(r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)", email):
@@ -115,9 +115,9 @@ class Login(Resource):
             r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)")
 
         if not email:
-            return {'Message' : 'Email field is required'}, 400
+            return {'Message': 'Email field is required'}, 400
         if not password:
-            return {'Message' : 'Password field is required'}, 400
+            return {'Message': 'Password field is required'}, 400
 
         while True:
             if not (re.match(validate_email, email)):

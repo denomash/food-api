@@ -5,7 +5,6 @@ import json
 
 from ... import create_app
 
-
 class Signup_tests(unittest.TestCase):
     """docstring for Order_tests"""
 
