@@ -17,12 +17,6 @@ class TestDB(unittest.TestCase):
         self.app = create_app('testing')
         self.client = self.app.test_client()
 
-        self.user = {
-            'username': 'deno',
-            'email': 'deno@gmail.com',
-            'password': 'aA123456',
-            'confirm password': 'aA123456'
-        }
         self.user2 = {
             'username': 'deno',
             'email': 'denogmail.com',
@@ -62,12 +56,6 @@ class TestDB(unittest.TestCase):
 
         with self.app.app_context():
             self.db = testdb()
-
-    def test_201_successful_signup(self):
-        """ test 201 for successfull signup"""
-        response = self.client.post(
-            '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
-        self.assertEqual(response.status_code, 201)
 
     def test_400_invalid_email(self):
         """ test 400 for invalid email"""
