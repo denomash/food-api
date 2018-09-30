@@ -137,8 +137,8 @@ class UserOrder(Resource):
         status = 'pending'
         user_id = current_user["id"]
 
-        if not item:
-            return {'Message': 'Food item field is required'}, 400
+        if not meal_id:
+            return {'Message': 'Meal id is required'}, 400
         if not address:
             return {'Message': 'Address field is required'}, 400
         if not quantity:
@@ -148,18 +148,18 @@ class UserOrder(Resource):
             conn = db()
             cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-            cur.execute("SELECT * FROM orders WHERE food = %(food)s",
-                        {'food': data['item']})
+            cur.execute("SELECT * FROM orders WHERE meal_id = %(meal_id)s",
+                        {'meal_id': data['mealId']})
 
             # check if order exist
             res = cur.fetchone()
-            if res is not None:
-                return {'Message': 'Order already exist'}
+            if res is None:
+                return {'Message': 'Meal does not exist'}
 
-            cur.execute("INSERT INTO orders (meal_id, address, quantity, status) VALUES (%(meal_id)s, %(quantity)s, %(address)s, %(status)s);", {
-                'meal_id': meal_id, 'address': address, 'quantity': quantity, 'status': status})
+            cur.execute("INSERT INTO orders (user_id, meal_id, quantity, address, status) VALUES (%(user_id)s, %(meal_id)s, %(quantity)s, %(address)s, %(status)s)", {
+                'user_id': user_id, 'meal_id': meal_id, 'quantity': quantity, 'address': address, 'status': status})
             conn.commit()
-            return {'Message': res}, 201
+            return {'Message': "Food item has been ordered"}, 201
         except (Exception, psycopg2.DatabaseError) as error:
             cur.execute("rollback;")
             print(error)
@@ -175,8 +175,6 @@ class UserOrder(Resource):
 
             cur.execute("SELECT * FROM orders WHERE user_id = %(user_id)s",
                         {'user_id': current_user['id']})
-            print(current_user['id'])
-
             # check if order exist
             res = cur.fetchall()
             if not res:
