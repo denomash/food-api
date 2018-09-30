@@ -1,7 +1,8 @@
 import unittest
+import json
 
 from ... import create_app
-from ...api.v2.db import test_db
+from ...api.v2.db import test_db, init_db
 
 
 class TestDb(unittest.TestCase):
