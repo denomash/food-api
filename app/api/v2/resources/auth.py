@@ -80,8 +80,8 @@ class Registerv2(Resource):
             if cur.fetchone() is not None:
                 return {'Message': 'User already exists'}, 400
 
-            cur.execute("INSERT INTO users (email, username, type, password, confirm_password) VALUES (%(email)s, %(username)s, %(type)s, %(password)s, %(confirm_password)s);", {
-                'email': data['email'], 'username': data['username'], 'type': 'client', 'password': data['password'], 'confirm_password': data['confirm password']})
+            cur.execute("INSERT INTO users (email, username, type, password) VALUES (%(email)s, %(username)s, %(type)s, %(password)s);", {
+                'email': data['email'], 'username': data['username'], 'type': 'client', 'password': data['password']})
 
             conn.commit()
 

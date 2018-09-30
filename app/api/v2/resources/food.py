@@ -34,8 +34,7 @@ class Menu(Resource):
         help="Description is required"
     )
 
-    @check_auth
-    def get(current_user, self):
+    def get(self):
         """get all foods"""
 
         try:
