@@ -5,6 +5,7 @@ import json
 
 from ... import create_app
 
+
 class Signup_tests(unittest.TestCase):
     """docstring for Order_tests"""
 
@@ -81,3 +82,6 @@ class Signup_tests(unittest.TestCase):
         response = self.client.post(
             '/api/v1/login', data=json.dumps(self.user7), content_type='application/json')
         self.assertEqual(response.status_code, 400)
+
+if __name__ == '__main__':
+    unittest.main()

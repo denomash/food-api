@@ -4,9 +4,8 @@ tb1 = """CREATE TABLE if not exists users (
     id bigserial UNIQUE PRIMARY KEY,
     email varchar(50) NOT NULL UNIQUE,
     username varchar(12) NOT NULL UNIQUE,
-    first_name varchar(250) NOT NULL,
-    last_name varchar(250) NOT NULL,
-    password_hash varchar(1000) NOT NULL
+    password varchar(250) NOT NULL,
+    confirm_password varchar(1000) NOT NULL
     );"""
 
 
