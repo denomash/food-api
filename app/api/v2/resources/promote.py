@@ -14,7 +14,7 @@ class Promote(Resource):
     """docstring for Promote"""
 
     @check_auth
-    def post(current_user, self, order_id):
+    def post(current_user, self, user_id):
         if current_user["type"] != "admin":
             return {"Message": "Must be an admin"}
         parser = reqparse.RequestParser()
@@ -47,7 +47,7 @@ class Promote(Resource):
                 return {"Message": "User with the id does not exist"}
 
             cur.execute("UPDATE users SET type=%s WHERE id=%s;",
-                        (user_type, order_id))
+                        (user_type, user_id))
 
             conn.commit()
             user = {}

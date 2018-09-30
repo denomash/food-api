@@ -48,6 +48,7 @@ def test_db():
     try:
         connection = testdb()
         connection.autocommit = True
+        teardown()
 
         # activate connection cursor
         cur = connection.cursor()
