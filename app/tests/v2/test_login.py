@@ -6,6 +6,7 @@ import json
 import psycopg2
 
 from ... import create_app
+from ...api.v2.db import testdb
 
 
 class TestDB(unittest.TestCase):
@@ -13,8 +14,8 @@ class TestDB(unittest.TestCase):
 
     def setUp(self):
         """Define test variables and initialize app."""
-        app = create_app('testing')
-        self.client = app.test_client()
+        self.app = create_app('testing')
+        self.client = self.app.test_client()
         self.user = {
             'email': 'deno@gmail.com',
             'password': ''
@@ -43,6 +44,8 @@ class TestDB(unittest.TestCase):
             'email': 'deno@gmail.com',
             'password': 'aA12345'
         }
+        with self.app.app_context():
+            self.db = testdb()
 
     def test_400_empty_password(self):
         """ test 400 for empty password"""
