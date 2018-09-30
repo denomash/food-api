@@ -3,6 +3,8 @@
 from flask_restful import Resource, reqparse
 import re
 import psycopg2
+import jwt
+import datetime
 
 # local imports
 from ..db import db
@@ -43,7 +45,7 @@ class Registerv2(Resource):
         data = Registerv2.parser.parse_args()
 
         email = data["email"]
-        password = data["password"]        
+        password = data["password"]
         confirm_password = data["confirm password"]
 
         if not email:
@@ -78,8 +80,8 @@ class Registerv2(Resource):
             if cur.fetchone() is not None:
                 return {'Message': 'User already exists'}, 400
 
-            cur.execute("INSERT INTO users (email, username, password, confirm_password) VALUES (%(email)s, %(username)s, %(password)s, %(confirm_password)s);", {
-                'email': data['email'], 'username': data['username'], 'password': data['password'], 'confirm_password': data['confirm password']})
+            cur.execute("INSERT INTO users (email, username, type, password, confirm_password) VALUES (%(email)s, %(username)s, %(type)s, %(password)s, %(confirm_password)s);", {
+                'email': data['email'], 'username': data['username'], 'type': 'client', 'password': data['password'], 'confirm_password': data['confirm password']})
 
             conn.commit()
 
@@ -143,9 +145,14 @@ class LoginV2(Resource):
                         {'email': data["email"], 'password': data['password']})
             # check if user email exist
 
-            if cur.fetchone() is None:
+            user = cur.fetchone()
+
+            if user is None:
                 return {'Message': 'Invalid credentials'}, 400
             else:
+                token = jwt.encode({'id': user[0], 'exp': datetime.datetime.utcnow(
+                ) + datetime.timedelta(minutes=30)}, 'secret')
+                return {'token': token.decode('UTF-8')}
                 return {'Message': 'User logged in successfully'}, 200
         except (Exception, psycopg2.DatabaseError) as error:
             cur.execute("rollback;")
