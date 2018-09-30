@@ -24,7 +24,6 @@ class Promote(Resource):
             type=str,
             required=True,
             help="Type to promote required"
-
         )
 
         data = parser.parse_args()
@@ -38,7 +37,6 @@ class Promote(Resource):
         try:
             conn = db()
             cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
             cur.execute("SELECT * FROM users WHERE id=%(user_id)s",
                         {'user_id': user_id})
             res = cur.fetchone()
@@ -46,7 +44,7 @@ class Promote(Resource):
                 return {"Message": "User with the id does not exist"}
             cur.execute("UPDATE users SET type=%s WHERE id=%s;",
                         (user_type, user_id))
-
+            
             conn.commit()
             user = {}
             user['id'] = res['id']

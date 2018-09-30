@@ -159,9 +159,7 @@ class LoginV2(Resource):
                     res['password'], password)
 
                 if checked_password == True:
-                    token = jwt.encode({'id': res['id'], 'exp': datetime.datetime.utcnow(
-                    ) + datetime.timedelta(minutes=60)}, 'secret')
-
+                    token = jwt.encode({'id': res['id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60)}, 'secret')
                     return {'token': token.decode('UTF-8')}, 200
 
                 return {'Message': 'Invalid credentials'}, 400
