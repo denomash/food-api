@@ -1,7 +1,7 @@
 import unittest
 
 from ... import create_app
-from ...v2.db import test_db
+from ...api.v2.db import test_db
 
 
 class TestDb(unittest.TestCase):
