@@ -10,6 +10,7 @@ from .api.v1.resources.orders import Get_orders, Orders, Orderbyid
 from .api.v1.resources.auth import Register, Login
 from .api.v2.resources.orders import Ordersv2, EditOrder
 from .api.v2.resources.auth import Registerv2, LoginV2
+from .api.v2.resources.food import Menu
 
 # Inisialize blueprint and flask-restful
 api_blueprint = Blueprint('api', __name__)
@@ -48,3 +49,4 @@ api.add_resource(Ordersv2, '/v2/orders')
 api.add_resource(EditOrder, '/v1/orders/<int:order_id>')
 api.add_resource(Registerv2, '/auth/signup')
 api.add_resource(LoginV2, '/auth/login')
+api.add_resource(Menu, '/menu')

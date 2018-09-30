@@ -43,7 +43,8 @@ class Registerv2(Resource):
         data = Registerv2.parser.parse_args()
 
         email = data["email"]
-        password = data["password"]
+        password = data["password"]        
+        confirm_password = data["confirm password"]
 
         if not email:
             return {'Message': 'Email field is required'}, 400

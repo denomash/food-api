@@ -43,7 +43,7 @@ class Ordersv2(Resource):
         try:
             conn = db()
             cur = conn.cursor()
-            cur.execute("SELECT * from orders")
+            cur.execute("SELECT * from orders WHERE user_id=%(id)s", {'id': data["id"]})                        
             orders = cur.fetchall()
 
             return {"Message": orders}
