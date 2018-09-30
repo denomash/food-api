@@ -1,5 +1,6 @@
 import unittest
 
+from ... import create_app
 from ...v2.db import test_db
 
 
