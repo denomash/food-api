@@ -37,7 +37,7 @@ def create_app(configuration_name):
     def index():
         """base route"""
         return render_template('index.html')
-
+      
     return app
 
 # Resourses
@@ -52,4 +52,4 @@ api.add_resource(Registerv2, '/v2/auth/signup')
 api.add_resource(LoginV2, '/v2/auth/login')
 api.add_resource(Menu, '/v2/menu')
 api.add_resource(UserOrder, '/v2/users/orders')
-api.add_resource(Promote, '/v2/promote/<int:order_id>')
+api.add_resource(Promote, '/v2/promote/<int:user_id>')

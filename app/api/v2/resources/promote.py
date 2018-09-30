@@ -14,7 +14,7 @@ class Promote(Resource):
     """docstring for Promote"""
 
     @check_auth
-    def post(current_user, self, order_id):
+    def post(current_user, self, user_id):
         if current_user["type"] != "admin":
             return {"Message": "Must be an admin"}
         parser = reqparse.RequestParser()
@@ -24,7 +24,6 @@ class Promote(Resource):
             type=str,
             required=True,
             help="Type to promote required"
-
         )
 
         data = parser.parse_args()
@@ -38,17 +37,12 @@ class Promote(Resource):
         try:
             conn = db()
             cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
-            cur.execute("SELECT * FROM users WHERE id=%(order_id)s",
-                        {'order_id': order_id})
-
+            cur.execute("SELECT * FROM users WHERE id=%(user_id)s",
+                        {'user_id': user_id})
             res = cur.fetchone()
             if res is None:
                 return {"Message": "User with the id does not exist"}
-
-            cur.execute("UPDATE users SET type=%s WHERE id=%s;",
-                        (user_type, order_id))
-
+            cur.execute("UPDATE users SET type=%s WHERE id=%s;", (user_type, user_id))
             conn.commit()
             user = {}
             user['id'] = res['id']

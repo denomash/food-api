@@ -64,15 +64,16 @@ class EditOrderv2(Resource):
                         {'order_id': order_id})
 
             # check if order exist
-            if cur.fetchone() is None:
+            res = cur.fetchone()
+            print(res)
+            if res is None:
                 return {'Message': 'Invalid order id'}
 
-            cur.execute("UPDATE  orders SET status=%s WHERE order_id=%s",
-                        (status, order_id))
+            cur.execute("UPDATE  orders SET status=%(status)s WHERE order_id=%(order_id)s",
+                        {'status': status, 'order_id': order_id})
             conn.commit()
-            res = cur.fetchone()
 
-            return {'Message': res}, 200
+            return {'Message': 'Order status updated'}, 200
         except (Exception, psycopg2.DatabaseError) as error:
             cur.execute("rollback;")
             print(error)
@@ -144,15 +145,18 @@ class UserOrder(Resource):
         if not quantity:
             return {'Message': 'Quantity field is required'}, 400
 
+        print(meal_id)
+
         try:
             conn = db()
             cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-            cur.execute("SELECT * FROM orders WHERE meal_id = %(meal_id)s",
-                        {'meal_id': data['mealId']})
+            cur.execute("SELECT * FROM meals WHERE meal_id = %(mealId)s",
+                        {'mealId': meal_id})
 
             # check if order exist
             res = cur.fetchone()
+            print(res)
             if res is None:
                 return {'Message': 'Meal does not exist'}
 

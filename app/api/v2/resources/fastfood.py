@@ -1,3 +1,4 @@
+
 tb1 = """CREATE TABLE if not exists users (
     id bigserial UNIQUE PRIMARY KEY,
     email varchar(50) NOT NULL UNIQUE,
