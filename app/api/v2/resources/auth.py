@@ -1,9 +1,9 @@
 # app/api/v2/resources/auth.py
 
 from flask_restful import Resource, reqparse
+import jwt
 import re
 import psycopg2
-import jwt
 import datetime
 
 # local imports

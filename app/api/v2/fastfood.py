@@ -28,5 +28,10 @@ tb3 = """CREATE TABLE if not exists meals (
     description text NOT NULL 
     );"""
 
+dt1 = """ DROP TABLE IF EXISTS users CASCADE """
+dt2 = """ DROP TABLE IF EXISTS orders CASCADE """
+dt3 = """ DROP TABLE IF EXISTS meals CASCADE """
 
 queries = [tb1, tb2, tb3]
+
+drop = [dt1, dt2, dt3]

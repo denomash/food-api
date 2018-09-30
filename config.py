@@ -1,9 +1,12 @@
 # config.py
+import os
 
 
 class Config():
     """Common configuration class"""
     DEBUG = False
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    DATABASE_URL = os.getenv('DATABASE_URL')
 
 
 class Development_config(Config):
@@ -15,7 +18,7 @@ class Development_config(Config):
 class Testing_config(Config):
     """Configuration for testing environment"""
     TESTING = True
-    DATABASE_URL = 'dbname=test_db user=test password=test host=localhost'
+    TEST_DB_URL = os.getenv('TEST_DB_URL')
     DEBUG = True
 
 

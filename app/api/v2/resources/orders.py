@@ -1,44 +1,23 @@
 # app/api/v1/resources/orders.py
 
 from flask_restful import Resource, reqparse
-import psycopg2, psycopg2.extras
+import psycopg2
+import psycopg2.extras
 
 # local imports
 from ..db import db
+from ..checkauth import check_auth
 
 
 class Ordersv2(Resource):
     """post an order"""
 
-    parser = reqparse.RequestParser()
-
-    parser.add_argument(
-        'item',
-        type=str,
-        required=True,
-        help="Food item is required"
-    )
-    parser.add_argument(
-        'price',
-        type=float,
-        required=True,
-        help="Price is required"
-    )
-    parser.add_argument(
-        'address',
-        type=str,
-        required=True,
-        help="Address is required"
-    )
-    parser.add_argument(
-        'quantity',
-        type=int,
-        required=True,
-        help="Quantity is required"
-    )
-
-    def get(self):
+    @check_auth
+    def get(current_user, self):
         """get all orders"""
+
+        if current_user["type"] != "admin":
+            return {"Message": "Must be an admin"}
         try:
             conn = db()
             cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -51,90 +30,32 @@ class Ordersv2(Resource):
             print(error)
             return {'Message': 'current transaction is aborted'}, 500
 
-    def post(self):
-        """create new order"""
 
-        data = Ordersv2.parser.parse_args()
-        item = data["item"]
-        price = data["price"]
-        quantity = data["quantity"]
-        address = data["address"]
-
-        if not item:
-            return {'Message': 'Food item field is required'}, 400
-        if not price:
-            return {'Message': 'Price field is required'}, 400
-        if not address:
-            return {'Message': 'Address field is required'}, 400
-        if not quantity:
-            return {'Message': 'Quantity field is required'}, 400
-
-        try:
-            conn = db()
-            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
-            cur.execute("SELECT * FROM orders WHERE food = %(food)s",
-                        {'food': data['item']})
-
-            # check if order exist
-            if cur.fetchone() is not None:
-                return {'Message': 'Order already exist'}
-            cur.execute("INSERT INTO orders (food, price, address, quantity) VALUES (%(food)s, %(price)s, %(address)s, %(quantity)s);", {
-                'food': data["item"], 'price': data["price"], 'address': data["address"], 'quantity': data['quantity']})
-            conn.commit()
-            return {'Message': 'Order created successfully'}, 201
-        except (Exception, psycopg2.DatabaseError) as error:
-            cur.execute("rollback;")
-            print(error)
-            return {'Message': 'current transaction is aborted'}, 500
-
-
-class EditOrder(Resource):
+class EditOrderv2(Resource):
     """docstring for Orders"""
 
     parser = reqparse.RequestParser()
 
     parser.add_argument(
-        'item',
+        'status',
         type=str,
         required=True,
-        help="Food item is required"
+        help="Status is required"
     )
-    parser.add_argument(
-        'price',
-        type=float,
-        required=True,
-        help="Price is required"
-    )
-    parser.add_argument(
-        'address',
-        type=str,
-        required=True,
-        help="Address is required"
-    )
-    parser.add_argument(
-        'quantity',
-        type=int,
-        required=True,
-        help="Quantity is required"
-    )
+    
+    @check_auth
+    def put(current_user, self, order_id):
+        """create new order"""
+        if current_user["type"] != "admin":
+            return {"Message": "Must be an admin"}
 
-    def put(self, order_id):
+        data = EditOrderv2.parser.parse_args()
+        status = data["status"]
 
-        data = EditOrder.parser.parse_args()
-        item = data["item"]
-        price = data["price"]
-        quantity = data["quantity"]
-        address = data["address"]
-
-        if not item:
-            return {'Message': 'Food item field is required'}, 400
-        elif not price:
-            return {'Message': 'Price field is required'}, 400
-        elif not quantity:
-            return {'Message': 'Image field is required'}, 400
-        elif not quantity:
-            return {'Message': 'Image field is required'}, 400
+        if not status:
+            return {'Message': 'Status can\'t be empty'}, 400
+        elif status not in ('pending', 'completed'):
+            return {'Message': 'Status must be either pending or completed'}, 400
 
         try:
             conn = db()
@@ -147,13 +68,12 @@ class EditOrder(Resource):
             if cur.fetchone() is None:
                 return {'Message': 'Invalid order id'}
 
-            cur.execute("UPDATE  orders SET food=%s, price=%s, address= %s, quantity= %s WHERE order_id=%s",
-                        (item, price, address, quantity, order_id))
+            cur.execute("UPDATE  orders SET status=%s WHERE order_id=%s",
+                        (status, order_id))
             conn.commit()
-
-            cur.execute("SELECT * FROM orders")
             res = cur.fetchone()
-            return {'Order': res}
+
+            return {'Message': res}, 200
         except (Exception, psycopg2.DatabaseError) as error:
             cur.execute("rollback;")
             print(error)
