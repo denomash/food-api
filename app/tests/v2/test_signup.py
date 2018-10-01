@@ -8,7 +8,7 @@ from ... import create_app
 from ...api.v2.db import test_db
 
 
-class TestDB(unittest.TestCase):
+class TestSignup(unittest.TestCase):
     """This class represents the bucketlist test case"""
 
     def setUp(self):

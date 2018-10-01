@@ -3,13 +3,12 @@
 import unittest
 import os
 import json
-import psycopg2
 
 from ... import create_app
 from ...api.v2.db import test_db
 
 
-class TestDB(unittest.TestCase):
+class TestLogin(unittest.TestCase):
     """This class represents the bucketlist test case"""
 
     def setUp(self):
