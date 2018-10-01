@@ -54,6 +54,11 @@ class TestDB(unittest.TestCase):
             'email': 'man@gmail.com',
             'password': 'aA123456'
         }
+        self.user10 = {
+            'email': 'deno@gmail.com',
+            'password': 'bB123456'
+        }
+
         with self.app.app_context():
             self.db = test_db()
 
@@ -100,12 +105,20 @@ class TestDB(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_404_if_user_does_not_exist(self):
-        """test 400 if user does not exists"""
+        """test 404 if user does not exists"""
         response = self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user8), content_type='application/json')
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user9), content_type='application/json')
         self.assertEqual(res.status_code, 404)
+
+    def test_400_login_invalid_credentials(self):
+        """test 400 invalid credentials"""
+        response = self.client.post(
+            '/api/v2/auth/signup', data=json.dumps(self.user8), content_type='application/json')
+        res = self.client.post(
+            '/api/v2/auth/login', data=json.dumps(self.user10), content_type='application/json')
+        self.assertEqual(res.status_code, 400)
 
 
 # Make the tests conveniently executable
