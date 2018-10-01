@@ -51,7 +51,7 @@ class TestDB(unittest.TestCase):
             'confirm password': 'aA123456'
         }
         self.user9 = {
-            'email': 'denno@gmail.com',
+            'email': 'man@gmail.com',
             'password': 'aA123456'
         }
         with self.app.app_context():
