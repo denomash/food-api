@@ -15,7 +15,12 @@ class TestDB(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app('testing')
         self.client = self.app.test_client()
-
+        self.user = {
+            'username': 'deno',
+            'email': 'deno@gmail.com',
+            'password': 'aA123456',
+            'confirm password': 'aA123456'
+        }
         self.user2 = {
             'username': 'deno',
             'email': 'denogmail.com',
@@ -91,6 +96,13 @@ class TestDB(unittest.TestCase):
         response = self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user7), content_type='application/json')
         self.assertEqual(response.status_code, 400)
+
+    def test_201_register_successfull(self):
+        """test 201 for loggin successfull"""
+        response = self.client.post(
+            '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
+
+        self.assertEqual(response.status_code, 201)
 
 
 # Make the tests conveniently executable
