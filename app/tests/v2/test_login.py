@@ -58,6 +58,10 @@ class TestDB(unittest.TestCase):
             'email': 'deno@gmail.com',
             'password': 'bB123456'
         }
+        self.user11 = {
+            'email': 'deno@gmail.com',
+            'password': 'aA123456'
+        }
 
         with self.app.app_context():
             self.db = test_db()
@@ -119,6 +123,14 @@ class TestDB(unittest.TestCase):
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user10), content_type='application/json')
         self.assertEqual(res.status_code, 400)
+
+    def test_200_user_logged_in_successfully(self):
+        """test 200 successfull login"""
+        response = self.client.post(
+            '/api/v2/auth/signup', data=json.dumps(self.user8), content_type='application/json')
+        res = self.client.post(
+            '/api/v2/auth/login', data=json.dumps(self.user11), content_type='application/json')
+        self.assertEqual(res.status_code, 200)
 
 
 # Make the tests conveniently executable
