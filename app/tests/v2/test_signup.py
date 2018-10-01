@@ -101,8 +101,15 @@ class TestDB(unittest.TestCase):
         """test 201 for loggin successfull"""
         response = self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
-
         self.assertEqual(response.status_code, 201)
+
+    def test_400_if_user_already_exist(self):
+        """test 400 if user exists"""
+        response = self.client.post(
+            '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
+        res = self.client.post(
+            '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
+        self.assertEqual(res.status_code, 400)
 
 
 # Make the tests conveniently executable
