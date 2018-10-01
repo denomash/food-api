@@ -104,7 +104,7 @@ class TestDB(unittest.TestCase):
         response = self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user8), content_type='application/json')
         res = self.client.post(
-            '/api/v2/auth/signup', data=json.dumps(self.user9), content_type='application/json')
+            '/api/v2/auth/login', data=json.dumps(self.user9), content_type='application/json')
         self.assertEqual(res.status_code, 404)
 
 
