@@ -5,7 +5,7 @@ import os
 import json
 
 from ... import create_app
-from ...api.v2.db import testdb
+from ...api.v2.db import test_db
 
 
 class TestDB(unittest.TestCase):
@@ -54,7 +54,7 @@ class TestDB(unittest.TestCase):
         }
 
         with self.app.app_context():
-            self.db = testdb()
+            self.db = test_db()
 
     def test_400_invalid_email(self):
         """ test 400 for invalid email"""

@@ -6,7 +6,7 @@ import json
 import psycopg2
 
 from ... import create_app
-from ...api.v2.db import testdb
+from ...api.v2.db import test_db
 
 
 class TestDB(unittest.TestCase):
@@ -45,7 +45,7 @@ class TestDB(unittest.TestCase):
             'password': 'aA12345'
         }
         with self.app.app_context():
-            self.db = testdb()
+            self.db = test_db()
 
     def test_400_empty_password(self):
         """ test 400 for empty password"""
