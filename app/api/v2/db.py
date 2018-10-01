@@ -2,22 +2,26 @@
 
 import psycopg2
 import os
+from flask import current_app
 
 # local imports
 from .fastfood import queries, drop
+
 
 def connect_to(url):
     conn = psycopg2.connect(url)
     return conn
 
+
 def db():
 
-    url = os.getenv('DATABASE_URL')
+    url = current_app.config.get('DATABASE_URL')
 
     # connect using psycopg2
     conn = connect_to(url)
 
     return conn
+
 
 def init_db():
 
@@ -34,19 +38,11 @@ def init_db():
         print("Database not connected")
         print(error)
 
-def testdb():
-
-    url = os.getenv('TEST_DB_URL')
-
-    # connect using psycopg2
-    conn = connect_to(url)
-
-    return conn
 
 def test_db():
 
     try:
-        connection = testdb()
+        connection = db()
         connection.autocommit = True
         teardown()
 
@@ -60,10 +56,11 @@ def test_db():
         print("Database not connected")
         print(error)
 
+
 def teardown():
 
     try:
-        connection = testdb()
+        connection = db()
         connection.autocommit = True
 
         # activate connection cursor

@@ -3,7 +3,6 @@
 import unittest
 import os
 import json
-import psycopg2
 
 from ... import create_app
 from ...api.v2.db import testdb
