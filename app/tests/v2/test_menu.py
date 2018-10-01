@@ -24,7 +24,7 @@ class TestDB(unittest.TestCase):
         """test 404 meals not available"""
         response = self.client.get(
             '/api/v2/menu', content_type='application/json')
-        self.assertEqual(res.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
 
 # Make the tests conveniently executable
