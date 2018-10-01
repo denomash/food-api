@@ -24,7 +24,7 @@ class TestMenu(unittest.TestCase):
         response = self.client.get(
             '/api/v2/menu', content_type='application/json')
         res = json.loads(response.data.decode())
-        self.assertEqual(res['Meals']: "No meals found")
+        self.assertEqual(res['Meals'], "No meals found")
         self.assertEqual(response.status_code, 404)
 
 
