@@ -31,6 +31,7 @@ class TestMenu(unittest.TestCase):
 
         with self.app.app_context():
             self.db = test_db()
+            self.cur = self.db.cursor()
 
     def test_404_meals_not_found(self):
         """test 404 meals not available"""
@@ -54,16 +55,13 @@ class TestMenu(unittest.TestCase):
         """test 401 must be admin"""
         self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
-
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
         token = json.loads(res.data.decode())['token']
         data = jwt.decode(token, 'secret')
-        conn = test_db()
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM users WHERE id = %(id)s ",
-                        {'id': data["id"]})
-        current_user = cur.fetchone()
+        self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
+                         {'id': data["id"]})
+        current_user = self.cur.fetchone()
         headers = {
             'Content-Type': 'application/json',
             'x-access-token': token}
