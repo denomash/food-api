@@ -1,7 +1,8 @@
 env/
 */__pycache__/
-*pyc
+*.pyc
 .pytest_cache
+.idea/
 
 # Ignore test-related files
 /coverage.data
