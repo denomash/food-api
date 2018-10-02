@@ -4,7 +4,9 @@ import unittest
 import os
 import json
 import jwt
+import psycopg2
 
+# local imports
 from ... import create_app
 from ...api.v2.db import test_db
 
