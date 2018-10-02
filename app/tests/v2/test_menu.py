@@ -53,7 +53,7 @@ class TestMenu(unittest.TestCase):
         self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
 
-        self.client.post(
+        res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
         token = json.loads(res.data.decode())['token']
         data = jwt.decode(token, 'secret')
