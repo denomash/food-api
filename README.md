@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/denomash/food-api.svg?branch=ft-place-new-order-route-%23160364056)](https://travis-ci.org/denomash/food-api) [![Coverage Status](https://coveralls.io/repos/github/denomash/food-api/badge.svg?branch=ch-add-tests-160767809)](https://coveralls.io/github/denomash/food-api?branch=ch-add-tests-160767809) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e0132b28a0ae4584af6057af6a8abd08)](https://www.codacy.com/app/denomash/food-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=denomash/food-api&amp;utm_campaign=Badge_Grade)
 
+
 ## About fast-food-fast api
 This is an api for ordering fast food.
 
@@ -75,4 +76,3 @@ Then use postman to test the following endpoints:
 |`/api/v1/signup`    |   POST     |signs up a user      |
 |--------------      |----------- | -----------------   |
 |`/api/v1/login`     |   POST     |logs in a user       |
-
