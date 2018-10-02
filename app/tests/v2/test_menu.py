@@ -69,12 +69,11 @@ class TestMenu(unittest.TestCase):
         self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
                          {'id': data["id"]})
         current_user = self.cur.fetchone()
-        print(current_user)
         headers = {
             'Content-Type': 'application/json',
             'x-access-token': token}
         response = self.client.post(
-            '/api/v2/menu', headers=headers)
+            '/api/v2/menu', data=json.dumps(self.food), headers=headers)
         if response and current_user['type'] != 'admin':
             self.assertEqual(response.status_code, 401)
 
