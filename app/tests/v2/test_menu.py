@@ -34,6 +34,11 @@ class TestMenu(unittest.TestCase):
             "price": 500,
             "description": "fried"
         }
+        self.food1 = {
+            "item": "",
+            "price": 500,
+            "description": "fried"
+        }
 
         with self.app.app_context():
             self.db = test_db()
@@ -76,6 +81,25 @@ class TestMenu(unittest.TestCase):
             '/api/v2/menu', data=json.dumps(self.food), headers=headers)
         if response and current_user['type'] != 'admin':
             self.assertEqual(response.status_code, 401)
+
+    def test_400_no_item(self):
+        """test 400 when admin posts an empty item"""
+        self.client.post(
+            '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
+        res = self.client.post(
+            '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
+        token = json.loads(res.data.decode())['token']
+        data = jwt.decode(token, 'secret')
+        self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
+                         {'id': data["id"]})
+        current_user = self.cur.fetchone()
+        headers = {
+            'Content-Type': 'application/json',
+            'x-access-token': token}
+        response = self.client.post(
+            '/api/v2/menu', data=json.dumps(self.food1), headers=headers)
+        if response and current_user['type'] == 'admin':
+            self.assertEqual(response.status_code, 400)
 
 
 
