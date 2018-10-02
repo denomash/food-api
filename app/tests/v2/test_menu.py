@@ -27,6 +27,16 @@ class TestMenu(unittest.TestCase):
         self.assertEqual(res['Meals'], "No meals found")
         self.assertEqual(response.status_code, 404)
 
+    def test_401_token_missing(self):
+        """test 401 missing token"""
+        self.client.post(
+            '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
+        self.client.post(
+            '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
+        response = self.client.post(
+            '/api/v2/menu', content_type='application/json')
+        self.assertEqual(response.status_code, 401)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
