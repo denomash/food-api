@@ -29,10 +29,16 @@ class TestMenu(unittest.TestCase):
             'email': 'deno@gmail.com',
             'password': 'aA123456'
         }
+        self.food = {
+            "item": "pizza",
+            "price": 500,
+            "description": "fried"
+        }
 
         with self.app.app_context():
             self.db = test_db()
-            self.cur = self.db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            self.cur = self.db.cursor(
+                cursor_factory=psycopg2.extras.RealDictCursor)
 
     def test_404_meals_not_found(self):
         """test 404 meals not available"""
