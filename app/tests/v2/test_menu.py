@@ -5,6 +5,7 @@ import os
 import json
 import jwt
 import psycopg2
+import psycopg2.extras
 
 # local imports
 from ... import create_app
@@ -31,7 +32,7 @@ class TestMenu(unittest.TestCase):
 
         with self.app.app_context():
             self.db = test_db()
-            self.cur = self.db.cursor()
+            self.cur = self.db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
     def test_404_meals_not_found(self):
         """test 404 meals not available"""
