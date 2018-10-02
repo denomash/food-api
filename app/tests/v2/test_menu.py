@@ -67,7 +67,7 @@ class TestMenu(unittest.TestCase):
             'x-access-token': token}
         response = self.client.post(
             '/api/v2/menu', headers=headers)
-        if current_user['type'] != 'admin':
+        if response and current_user['type'] != 'admin':
             self.assertEqual(response.status_code, 401)
 
 
