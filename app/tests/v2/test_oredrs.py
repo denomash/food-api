@@ -13,7 +13,7 @@ from ...api.v2.db import test_db
 
 
 class TestMenu(unittest.TestCase):
-    """This class represents the menu test case"""
+    """This class represents the orders test case"""
 
     def setUp(self):
         """Define test variables and initialize app."""

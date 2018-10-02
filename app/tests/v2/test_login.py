@@ -9,7 +9,7 @@ from ...api.v2.db import test_db
 
 
 class TestLogin(unittest.TestCase):
-    """This class represents the bucketlist test case"""
+    """This class represents the login test case"""
 
     def setUp(self):
         """Define test variables and initialize app."""
