@@ -41,7 +41,7 @@ class TestMenu(unittest.TestCase):
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
         self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
-        response = self.client.post(
+        response = self.client.get(
             '/api/v2/orders', content_type='application/json')
         self.assertEqual(response.status_code, 401)
 
