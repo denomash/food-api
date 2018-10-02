@@ -57,6 +57,8 @@ class TestMenu(unittest.TestCase):
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
         token = json.loads(res.data.decode())['token']
         data = jwt.decode(token, 'secret')
+        conn = test_db()
+        cur = conn.cursor()
         cur.execute("SELECT * FROM users WHERE id = %(id)s ",
                         {'id': data["id"]})
         current_user = cur.fetchone()
