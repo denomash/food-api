@@ -1,6 +1,7 @@
 # app/api/v2/db.py
 
 import psycopg2
+import psycopg2.extras
 import os
 from flask import current_app
 
@@ -31,6 +32,7 @@ def init_db():
 
         # activate connection cursor
         cur = connection.cursor()
+
         for query in queries:
             cur.execute(query)
         connection.commit()
@@ -47,7 +49,9 @@ def test_db():
         teardown()
 
         # activate connection cursor
-        cur = connection.cursor()
+        cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        cur.execute("INSERT INTO users (email, username, type, password) VALUES (%(email)s, %(username)s, %(type)s, %(password)s);", {
+            'email': 'admin@gmail.com', 'username': 'admin', 'type': 'admin', 'password': 'aA123456'})
         for query in queries:
             cur.execute(query)
         connection.commit()
