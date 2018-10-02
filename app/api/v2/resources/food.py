@@ -80,7 +80,7 @@ class Menu(Resource):
 
             # check if order exist
             if cur.fetchone() is not None:
-                return {'Message': 'Food already exist'}
+                return {'Message': 'Food already exist'}, 400
             cur.execute("INSERT INTO meals (food, price, description) VALUES (%(food)s, %(price)s, %(description)s);", {
                 'food': data["item"], 'price': data["price"], 'description': data["description"]})
             conn.commit()

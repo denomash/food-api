@@ -149,6 +149,27 @@ class TestMenu(unittest.TestCase):
         if response and current_user['type'] == 'admin':
             self.assertEqual(response.status_code, 400)
 
+    def test_400_meal_already_exist(self):
+        """test 400 meal exists if admin try to add a meal twice"""
+        self.client.post(
+            '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
+        res = self.client.post(
+            '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
+        token = json.loads(res.data.decode())['token']
+        data = jwt.decode(token, 'secret')
+        self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
+                         {'id': data["id"]})
+        current_user = self.cur.fetchone()
+        headers = {
+            'Content-Type': 'application/json',
+            'x-access-token': token}
+        self.client.post(
+            '/api/v2/menu', data=json.dumps(self.food), headers=headers)
+        response = self.client.post(
+            '/api/v2/menu', data=json.dumps(self.food), headers=headers)
+        if response and current_user['type'] == 'admin':
+            self.assertEqual(response.status_code, 400)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
