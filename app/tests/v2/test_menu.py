@@ -58,8 +58,6 @@ class TestMenu(unittest.TestCase):
             self.db = test_db()
             self.cur = self.db.cursor(
                 cursor_factory=psycopg2.extras.RealDictCursor)
-            self.cur.execute("INSERT INTO users (email, username, type, password) VALUES (%(email)s, %(username)s, %(type)s, %(password)s);", {
-                'email': 'admin@gmail.com', 'username': 'admin', 'type': 'admin', 'password': 'aA123456'})
 
     def test_404_meals_not_found(self):
         """test 404 meals not available"""
@@ -178,6 +176,8 @@ class TestMenu(unittest.TestCase):
 
     def test_201_meal_created_successfully(self):
         """test 201 meal added successfully by admin"""
+        self.cur.execute("INSERT INTO users (email, username, type, password) VALUES (%(email)s, %(username)s, %(type)s, %(password)s);", {
+            'email': 'admin@gmail.com', 'username': 'admin', 'type': 'admin', 'password': 'aA123456'})
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.admin), content_type='application/json')
         token = json.loads(res.data.decode())['token']
