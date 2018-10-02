@@ -1,6 +1,6 @@
 # app/api/v2/resources/food.py
 
-from flask import make_response
+
 from flask_restful import Resource, reqparse
 import jwt
 import psycopg2
@@ -57,7 +57,7 @@ class Menu(Resource):
     def post(current_user, self):
         """add a food item"""
         if current_user["type"] != "admin":
-            return make_response({"Message": "Must be an admin"}, 401)
+            return {"Message": "Must be an admin"}, 401
 
         data = Menu.parser.parse_args()
         item = data["item"]
