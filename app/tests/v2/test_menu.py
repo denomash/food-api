@@ -3,6 +3,7 @@
 import unittest
 import os
 import json
+import jwt
 
 from ... import create_app
 from ...api.v2.db import test_db
@@ -51,15 +52,21 @@ class TestMenu(unittest.TestCase):
         """test 401 must be admin"""
         self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
-        res = self.client.post(
+
+        self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
         token = json.loads(res.data.decode())['token']
+        data = jwt.decode(token, 'secret')
+        cur.execute("SELECT * FROM users WHERE id = %(id)s ",
+                        {'id': data["id"]})
+        current_user = cur.fetchone()
         headers = {
             'Content-Type': 'application/json',
             'x-access-token': token}
         response = self.client.post(
             '/api/v2/menu', headers=headers)
-        self.assertEqual(response.status_code, 401)
+        if current_user['type'] != 'admin':
+            self.assertEqual(response.status_code, 401)
 
 
 # Make the tests conveniently executable
