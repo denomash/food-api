@@ -15,6 +15,16 @@ class TestMenu(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app('testing')
         self.client = self.app.test_client()
+        self.user = {
+            'username': 'deno',
+            'email': 'deno@gmail.com',
+            'password': 'aA123456',
+            'confirm password': 'aA123456'
+        }
+        self.user1 = {
+            'email': 'deno@gmail.com',
+            'password': 'aA123456'
+        }
 
         with self.app.app_context():
             self.db = test_db()
