@@ -51,14 +51,14 @@ class TestMenu(unittest.TestCase):
         """test 401 must be admin"""
         self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
-        self.client.post(
+        res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
+        token = json.loads(res.data.decode())['token']
+        headers = {
+            'Content-Type': 'application/json',
+            'x-access-token': token}
         response = self.client.post(
-            '/api/v2/menu', content_type='application/json', headers=self.headers)
-        if response:
-            self.headers = {
-                'x-access-token': token
-            }
+            '/api/v2/menu', headers=headers)
         self.assertEqual(response.status_code, 401)
 
 
