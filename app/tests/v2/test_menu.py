@@ -69,6 +69,7 @@ class TestMenu(unittest.TestCase):
         self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
                          {'id': data["id"]})
         current_user = self.cur.fetchone()
+        print(current_user)
         headers = {
             'Content-Type': 'application/json',
             'x-access-token': token}
