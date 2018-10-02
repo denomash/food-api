@@ -13,7 +13,7 @@ from ...api.v2.db import test_db
 
 
 class TestMenu(unittest.TestCase):
-    """This class represents the bucketlist test case"""
+    """This class represents the menu test case"""
 
     def setUp(self):
         """Define test variables and initialize app."""
@@ -176,8 +176,6 @@ class TestMenu(unittest.TestCase):
 
     def test_201_meal_created_successfully(self):
         """test 201 meal added successfully by admin"""
-        self.cur.execute("INSERT INTO users (email, username, type, password) VALUES (%(email)s, %(username)s, %(type)s, %(password)s);", {
-            'email': 'admin@gmail.com', 'username': 'admin', 'type': 'admin', 'password': 'aA123456'})
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.admin), content_type='application/json')
         token = json.loads(res.data.decode())['token']
