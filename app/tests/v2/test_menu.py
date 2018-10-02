@@ -83,7 +83,7 @@ class TestMenu(unittest.TestCase):
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
-        token = json.loads(res.data.decode())['token']
+        token = json.loads(res.data.decode('utf-8'))['token']
         data = jwt.decode(token, 'secret')
         self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
                          {'id': data["id"]})
@@ -102,7 +102,7 @@ class TestMenu(unittest.TestCase):
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
-        token = json.loads(res.data.decode())['token']
+        token = json.loads(res.data.decode('utf-8'))['token']
         data = jwt.decode(token, 'secret')
         self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
                          {'id': data["id"]})
@@ -121,7 +121,7 @@ class TestMenu(unittest.TestCase):
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
-        token = json.loads(res.data.decode())['token']
+        token = json.loads(res.data.decode('utf-8'))['token']
         data = jwt.decode(token, 'secret')
         self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
                          {'id': data["id"]})
@@ -140,7 +140,7 @@ class TestMenu(unittest.TestCase):
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
-        token = json.loads(res.data.decode())['token']
+        token = json.loads(res.data.decode('utf-8'))['token']
         data = jwt.decode(token, 'secret')
         self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
                          {'id': data["id"]})
@@ -159,7 +159,7 @@ class TestMenu(unittest.TestCase):
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
-        token = json.loads(res.data.decode())['token']
+        token = json.loads(res.data.decode('utf-8'))['token']
         data = jwt.decode(token, 'secret')
         self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
                          {'id': data["id"]})
@@ -176,11 +176,10 @@ class TestMenu(unittest.TestCase):
 
     def test_201_meal_created_successfully(self):
         """test 201 meal added successfully by admin"""
-        self.client.post(
-            '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
+
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.admin), content_type='application/json')
-        token = json.loads(res.data.decode())['token']
+        token = json.loads(res.data.decode('utf-8'))['token']
         data = jwt.decode(token, 'secret')
         self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
                          {'id': data["id"]})
