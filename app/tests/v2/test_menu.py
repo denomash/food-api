@@ -75,7 +75,10 @@ class TestMenu(unittest.TestCase):
         response = self.client.post(
             '/api/v2/menu', data=json.dumps(self.food), headers=headers)
         if response and current_user['type'] != 'admin':
+            self.assertEqual(res['Message'], "Must be an admin")
             self.assertEqual(response.status_code, 401)
+
+
 
 
 # Make the tests conveniently executable
