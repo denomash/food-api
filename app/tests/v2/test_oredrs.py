@@ -146,6 +146,11 @@ class TestMenu(unittest.TestCase):
             '/api/v2/users/orders', headers=headers, data=json.dumps(self.order))
         self.assertEqual(response.status_code, 201)
 
+        # test 200 user order history found
+        response = self.client.get(
+            '/api/v2/users/orders', headers=headers)
+        self.assertEqual(response.status_code, 200)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
