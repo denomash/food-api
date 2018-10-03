@@ -2,8 +2,6 @@
 
 import unittest
 import json
-import psycopg2
-import psycopg2.extras
 
 # local imports
 from ... import create_app
