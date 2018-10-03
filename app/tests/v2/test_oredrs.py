@@ -66,6 +66,9 @@ class TestMenu(unittest.TestCase):
         self.status = {
             "status": "status"
         }
+        self.status1 = {
+            "status": ""
+        }
 
         with self.app.app_context():
             self.db = test_db()
@@ -98,18 +101,26 @@ class TestMenu(unittest.TestCase):
 
     def test_user_orders(self):
         """test user order routes"""
+
+        # login admin
         resp = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.admin), content_type='application/json')
         token = json.loads(resp.data.decode('utf-8'))['token']
         headers = {
             'Content-Type': 'application/json',
             'x-access-token': token}
+
+        # post a meal
         response = self.client.post(
             '/api/v2/menu', headers=headers, data=json.dumps(self.food))
         self.assertEqual(response.status_code, 201)
+
+        # signup user
         response = self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
         self.assertEqual(response.status_code, 201)
+
+        # login user
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
         self.assertEqual(res.status_code, 200)
@@ -168,6 +179,19 @@ class TestMenu(unittest.TestCase):
         response = self.client.get(
             'api/v2/orders', headers=headers)
         self.assertEqual(response.status_code, 401)
+
+        # login admin
+        resp = self.client.post(
+            '/api/v2/auth/login', data=json.dumps(self.admin), content_type='application/json')
+        token = json.loads(resp.data.decode('utf-8'))['token']
+        headers = {
+            'Content-Type': 'application/json',
+            'x-access-token': token}
+
+        # test admin route 400 empty status
+        response = self.client.post(
+            'api/v2/orders', headers=headers, data=json.dumps(self.status1))
+        self.assertEqual(response.status_code, 400)
 
 
 # Make the tests conveniently executable
