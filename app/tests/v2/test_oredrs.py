@@ -45,6 +45,20 @@ class TestMenu(unittest.TestCase):
             '/api/v2/orders', content_type='application/json')
         self.assertEqual(response.status_code, 401)
 
+    def test_404_no_history(self):
+        """test 404 no order history for current user"""
+        self.client.post(
+            '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
+        self.client.post(
+            '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
+        token = json.loads(res.data.decode('utf-8'))['token']
+        headers = {
+            'Content-Type': 'application/json',
+            'x-access-token': token}
+        response = self.client.get(
+            '/v2/users/orders', headers=headers)
+        self.assertEqual(response.status_code, 401)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
