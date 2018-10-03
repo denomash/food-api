@@ -104,7 +104,7 @@ class TestMenu(unittest.TestCase):
         # test 400 empty meal id
         response = self.client.post(
             '/api/v2/users/orders', headers=headers, data=json.dumps(self.order1))
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
 
         # test user can post a meal
         response = self.client.post(
