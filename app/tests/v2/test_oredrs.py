@@ -156,12 +156,7 @@ class TestMenu(unittest.TestCase):
 
         # test 401 normal user can't access update status route
         response = self.client.put(
-            '/v2/orders/1', headers=headers, data=json.dumps(self.status))
-        self.assertEqual(response.status_code, 401)
-
-        # test 401 normal user can't access get order by id route
-        response = self.client.get(
-            '/v2/orders/1', headers=headers)
+            'api/v2/orders/1', headers=headers, data=json.dumps(self.status))
         self.assertEqual(response.status_code, 401)
 
 
