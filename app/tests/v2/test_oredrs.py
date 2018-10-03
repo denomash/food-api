@@ -81,11 +81,12 @@ class TestMenu(unittest.TestCase):
         headers = {
             'Content-Type': 'application/json',
             'x-access-token': token}
-        self.client.post(
-            '/api/v2/menu', data=json.dumps(self.food), headers=headers)
-
-        self.client.post(
+        response = self.client.post(
+            '/api/v2/menu', headers=headers, data=json.dumps(self.food))
+        self.assertEqual(response.status_code, 201)
+        response = self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
+        self.assertEqual(response.status_code, 201)
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
         self.assertEqual(res.status_code, 200)
@@ -95,7 +96,7 @@ class TestMenu(unittest.TestCase):
             'Content-Type': 'application/json',
             'x-access-token': token}
         response = self.client.post(
-            '/v2/users/orders', data=json.dumps(self.order), headers=headers)
+            '/api/v2/users/orders', headers=headers, data=json.dumps(self.order))
         self.assertEqual(response.status_code, 201)
 
 
