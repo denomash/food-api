@@ -109,7 +109,7 @@ class TestLogin(unittest.TestCase):
 
     def test_404_if_user_does_not_exist(self):
         """test 404 if user does not exists"""
-        response = self.client.post(
+        self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user8), content_type='application/json')
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user9), content_type='application/json')
@@ -117,7 +117,7 @@ class TestLogin(unittest.TestCase):
 
     def test_400_login_invalid_credentials(self):
         """test 400 invalid credentials"""
-        response = self.client.post(
+        self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user8), content_type='application/json')
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user10), content_type='application/json')
@@ -125,7 +125,7 @@ class TestLogin(unittest.TestCase):
 
     def test_200_user_logged_in_successfully(self):
         """test 200 successfull login"""
-        response = self.client.post(
+        self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user8), content_type='application/json')
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user11), content_type='application/json')

@@ -28,7 +28,7 @@ class Ordersv2(Resource):
             cur.execute("rollback;")
             print(error)
             return {'Message': 'current transaction is aborted'}, 500
- 
+
 
 class EditOrderv2(Resource):
     """docstring for Orders"""

@@ -102,8 +102,8 @@ class TestMenu(unittest.TestCase):
             '/v2/users/orders', headers=headers)
         self.assertEqual(response.status_code, 404)
 
-    def test_user_orders(self):
-        """test user order routes"""
+    def test_order_related_routes(self):
+        """test order related routes"""
 
         # login admin
         resp = self.client.post(
@@ -200,17 +200,16 @@ class TestMenu(unittest.TestCase):
         response = self.client.put(
             'api/v2/orders/1', headers=headers, data=json.dumps(self.status))
         self.assertEqual(response.status_code, 400)
-
-        # test admin update status route 400 invalid order id 
+        
+        # test admin update status route 400 invalid order id
         response = self.client.put(
             'api/v2/orders/12', headers=headers, data=json.dumps(self.status2))
         self.assertEqual(response.status_code, 400)
 
-        # test 200 admin update status route 
+        # test 200 admin update status route
         response = self.client.put(
             'api/v2/orders/1', headers=headers, data=json.dumps(self.status2))
         self.assertEqual(response.status_code, 200)
-
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

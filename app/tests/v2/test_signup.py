@@ -1,7 +1,6 @@
 # app/tests/v2/test_orders.py
 
 import unittest
-import os
 import json
 
 from ... import create_app
@@ -105,7 +104,7 @@ class TestSignup(unittest.TestCase):
 
     def test_400_if_user_already_exist(self):
         """test 400 if user exists"""
-        response = self.client.post(
+        self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
         res = self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')

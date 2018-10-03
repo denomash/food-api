@@ -1,9 +1,7 @@
 # app/tests/v2/test_orders.py
 
 import unittest
-import os
 import json
-import jwt
 import psycopg2
 import psycopg2.extras
 
