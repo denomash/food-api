@@ -157,7 +157,7 @@ class TestMenu(unittest.TestCase):
         }
         response = self.client.post(
             '/api/v2/menu', data=json.dumps(self.food), headers=headers)
-            self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 201)
 
 
 # Make the tests conveniently executable
