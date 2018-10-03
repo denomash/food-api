@@ -120,22 +120,16 @@ class TestMenu(unittest.TestCase):
 
     def test_400_no_description(self):
         """test 400 when admin posts an empty description field"""
-        self.client.post(
-            '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
-        res = self.client.post(
-            '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
-        token = json.loads(res.data.decode('utf-8'))['token']
-        data = jwt.decode(token, 'secret')
-        self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
-                         {'id': data["id"]})
-        current_user = self.cur.fetchone()
+        resp = self.client.post(
+            '/api/v2/auth/login', data=json.dumps(self.admin), content_type='application/json')
+        token = json.loads(resp.data.decode('utf-8'))['token']
         headers = {
             'Content-Type': 'application/json',
-            'x-access-token': token}
+            'x-access-token': token
+        }
         response = self.client.post(
             '/api/v2/menu', data=json.dumps(self.food3), headers=headers)
-        if response and current_user['type'] == 'admin':
-            self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 400)
 
     def test_400_meal_already_exist(self):
         """test 400 meal exists if admin try to add a meal twice"""
