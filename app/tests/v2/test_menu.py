@@ -86,7 +86,6 @@ class TestMenu(unittest.TestCase):
             'Content-Type': 'application/json',
             'x-access-token': token
         }
-        
         response = self.client.post(
             '/api/v2/menu', data=json.dumps(self.food), headers=headers)
         self.assertEqual(response.status_code, 401)
