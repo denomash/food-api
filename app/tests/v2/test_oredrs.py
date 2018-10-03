@@ -63,6 +63,9 @@ class TestMenu(unittest.TestCase):
             "quantity": 5,
             "address": "K-Road"
         }
+        self.status = {
+            "status": "status"
+        }
 
         with self.app.app_context():
             self.db = test_db()
