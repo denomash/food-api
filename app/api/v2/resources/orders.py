@@ -65,7 +65,6 @@ class EditOrderv2(Resource):
 
             # check if order exist
             res = cur.fetchone()
-            print(res)
             if res is None:
                 return {'Message': 'Invalid order id'}, 400
 
@@ -95,7 +94,7 @@ class EditOrderv2(Resource):
             # check if order exist
             res = cur.fetchone()
             if res is None:
-                return {'Message': 'Invalid order id'}
+                return {'Message': 'Invalid order id'}, 400
 
             return {'Message': res}, 200
         except (Exception, psycopg2.DatabaseError) as error:
@@ -156,7 +155,6 @@ class UserOrder(Resource):
 
             # check if order exist
             res = cur.fetchone()
-            print(res)
             if res is None:
                 return {'Message': 'Meal does not exist'}, 400
 
