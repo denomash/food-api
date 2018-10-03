@@ -34,11 +34,9 @@ class TestMenu(unittest.TestCase):
             'password': 'aA123456'
         }
         self.food = {
-            {
-                "item": "pizza",
-                "price": 500,
-                "description": "fried"
-            }
+            "item": "pizza",
+            "price": 500,
+            "description": "fried"
         }
         self.order = {
             "mealId": "1",
