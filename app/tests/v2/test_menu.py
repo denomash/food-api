@@ -79,6 +79,8 @@ class TestMenu(unittest.TestCase):
 
     def test_401_must_be_admin(self):
         """test 401 must be admin"""
+        self.client.post(
+            '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
         resp = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
         token = json.loads(resp.data.decode('utf-8'))['token']
