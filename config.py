@@ -18,7 +18,7 @@ class Development_config(Config):
 class Testing_config(Config):
     """Configuration for testing environment"""
     TESTING = True
-    TEST_DB_URL = os.getenv('TEST_DB_URL')
+    DATABASE_URL = os.getenv('TEST_DB_URL')
     DEBUG = True
 
 

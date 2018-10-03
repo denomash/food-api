@@ -46,7 +46,7 @@ class Menu(Resource):
             if not meals:
                 return {"Meals": "No meals found"}, 404
 
-            return {"Meals": meals}
+            return {"Meals": meals}, 200
         except (Exception, psycopg2.DatabaseError) as error:
             cur = conn.cursor()
             cur.execute("rollback;")
@@ -57,7 +57,7 @@ class Menu(Resource):
     def post(current_user, self):
         """add a food item"""
         if current_user["type"] != "admin":
-            return {"Message": "Must be an admin"}
+            return {"Message": "Must be an admin"}, 401
 
         data = Menu.parser.parse_args()
         item = data["item"]
@@ -80,7 +80,7 @@ class Menu(Resource):
 
             # check if order exist
             if cur.fetchone() is not None:
-                return {'Message': 'Food already exist'}
+                return {'Message': 'Food already exist'}, 400
             cur.execute("INSERT INTO meals (food, price, description) VALUES (%(food)s, %(price)s, %(description)s);", {
                 'food': data["item"], 'price': data["price"], 'description': data["description"]})
             conn.commit()

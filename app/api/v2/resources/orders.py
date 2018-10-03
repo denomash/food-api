@@ -16,14 +16,14 @@ class Ordersv2(Resource):
         """get all orders"""
 
         if current_user["type"] != "admin":
-            return {"Message": "Must be an admin"}
+            return {"Message": "Must be an admin"}, 401
         try:
             conn = db()
             cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
             cur.execute("SELECT * from orders")
             orders = cur.fetchall()
 
-            return {"Message": orders}
+            return {"Message": orders}, 200
         except (Exception, psycopg2.DatabaseError) as error:
             cur.execute("rollback;")
             print(error)
@@ -37,7 +37,7 @@ class EditOrderv2(Resource):
     def put(current_user, self, order_id):
         """update order by id by admin"""
         if current_user["type"] != "admin":
-            return {"Message": "Must be an admin"}
+            return {"Message": "Must be an admin"}, 401
 
         parser = reqparse.RequestParser()
 
@@ -65,9 +65,8 @@ class EditOrderv2(Resource):
 
             # check if order exist
             res = cur.fetchone()
-            print(res)
             if res is None:
-                return {'Message': 'Invalid order id'}
+                return {'Message': 'Invalid order id'}, 400
 
             cur.execute("UPDATE  orders SET status=%(status)s WHERE order_id=%(order_id)s",
                         {'status': status, 'order_id': order_id})
@@ -95,7 +94,7 @@ class EditOrderv2(Resource):
             # check if order exist
             res = cur.fetchone()
             if res is None:
-                return {'Message': 'Invalid order id'}
+                return {'Message': 'Invalid order id'}, 400
 
             return {'Message': res}, 200
         except (Exception, psycopg2.DatabaseError) as error:
@@ -156,9 +155,8 @@ class UserOrder(Resource):
 
             # check if order exist
             res = cur.fetchone()
-            print(res)
             if res is None:
-                return {'Message': 'Meal does not exist'}
+                return {'Message': 'Meal does not exist'}, 400
 
             cur.execute("INSERT INTO orders (user_id, meal_id, quantity, address, status) VALUES (%(user_id)s, %(meal_id)s, %(quantity)s, %(address)s, %(status)s)", {
                 'user_id': user_id, 'meal_id': meal_id, 'quantity': quantity, 'address': address, 'status': status})
