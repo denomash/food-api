@@ -193,6 +193,11 @@ class TestMenu(unittest.TestCase):
             'api/v2/orders/1', headers=headers, data=json.dumps(self.status1))
         self.assertEqual(response.status_code, 400)
 
+        # test admin route 400 invalid status name
+        response = self.client.put(
+            'api/v2/orders/1', headers=headers, data=json.dumps(self.status))
+        self.assertEqual(response.status_code, 400)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
