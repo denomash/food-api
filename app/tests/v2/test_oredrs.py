@@ -82,7 +82,7 @@ class TestMenu(unittest.TestCase):
             'x-access-token': token}
         if current_user['type'] == 'admin':
             self.client.post(
-                '/api/v2/menu', data=json.dumps(self.food), headers=headers)
+                '/api/v2/menu', data=json.dumps(self.order), headers=headers)
 
         self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
