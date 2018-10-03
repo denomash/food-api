@@ -70,9 +70,9 @@ class TestMenu(unittest.TestCase):
 
     def test_user_orders(self):
         """test user order routes"""
-        self.client.post(
+        resp = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.admin), content_type='application/json')
-        token = json.loads(res.data.decode('utf-8'))['token']
+        token = json.loads(resp.data.decode('utf-8'))['token']
         data = jwt.decode(token, 'secret')
         self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
                          {'id': data["id"]})
