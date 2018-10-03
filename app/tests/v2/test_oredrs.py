@@ -159,6 +159,11 @@ class TestMenu(unittest.TestCase):
             'api/v2/orders/1', headers=headers, data=json.dumps(self.status))
         self.assertEqual(response.status_code, 401)
 
+        # test 401 normal user can't access get order by id route
+        response = self.client.get(
+            'api/v2/orders/1', headers=headers)
+        self.assertEqual(response.status_code, 401)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
