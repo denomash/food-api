@@ -1,11 +1,7 @@
 # app/tests/v2/test_orders.py
 
 import unittest
-import os
 import json
-import jwt
-import psycopg2
-import psycopg2.extras
 
 # local imports
 from ... import create_app
@@ -200,7 +196,7 @@ class TestMenu(unittest.TestCase):
         response = self.client.put(
             'api/v2/orders/1', headers=headers, data=json.dumps(self.status))
         self.assertEqual(response.status_code, 400)
-        
+
         # test admin update status route 400 invalid order id
         response = self.client.put(
             'api/v2/orders/12', headers=headers, data=json.dumps(self.status2))
