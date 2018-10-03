@@ -33,6 +33,13 @@ class TestMenu(unittest.TestCase):
             'email': 'admin@gmail.com',
             'password': 'aA123456'
         }
+        self.food = {
+            {
+                "item": "pizza",
+                "price": 500,
+                "description": "fried"
+            }
+        }
         self.order = {
             "mealId": "1",
             "quantity": 5,
@@ -77,7 +84,7 @@ class TestMenu(unittest.TestCase):
             'Content-Type': 'application/json',
             'x-access-token': token}
         self.client.post(
-            '/api/v2/menu', data=json.dumps(self.order), headers=headers)
+            '/api/v2/menu', data=json.dumps(self.food), headers=headers)
 
         self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
