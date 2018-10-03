@@ -189,7 +189,7 @@ class TestMenu(unittest.TestCase):
             'x-access-token': token}
 
         # test admin route 400 empty status
-        response = self.client.post(
+        response = self.client.put(
             'api/v2/orders', headers=headers, data=json.dumps(self.status1))
         self.assertEqual(response.status_code, 400)
 
