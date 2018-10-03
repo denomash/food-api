@@ -79,22 +79,17 @@ class TestMenu(unittest.TestCase):
 
     def test_401_must_be_admin(self):
         """test 401 must be admin"""
-        self.client.post(
-            '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
-        res = self.client.post(
+        resp = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
-        token = json.loads(res.data.decode('utf-8'))['token']
-        data = jwt.decode(token, 'secret')
-        self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
-                         {'id': data["id"]})
-        current_user = self.cur.fetchone()
+        token = json.loads(resp.data.decode('utf-8'))['token']
         headers = {
             'Content-Type': 'application/json',
-            'x-access-token': token}
+            'x-access-token': token
+        }
+        
         response = self.client.post(
             '/api/v2/menu', data=json.dumps(self.food), headers=headers)
-        if response and current_user['type'] != 'admin':
-            self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 401)
 
     def test_400_no_item(self):
         """test 400 when admin posts an empty item field"""
