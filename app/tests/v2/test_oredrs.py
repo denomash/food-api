@@ -29,6 +29,15 @@ class TestMenu(unittest.TestCase):
             'email': 'deno@gmail.com',
             'password': 'aA123456'
         }
+        self.admin = {
+            'email': 'admin@gmail.com',
+            'password': 'aA1234567'
+        }
+        self.order = {
+            "mealId": "1",
+            "quantity": 5,
+            "address": "K-Road"
+        }
 
         with self.app.app_context():
             self.db = test_db()
@@ -58,6 +67,31 @@ class TestMenu(unittest.TestCase):
         response = self.client.get(
             '/v2/users/orders', headers=headers)
         self.assertEqual(response.status_code, 404)
+
+    def test_user_orders(self):
+        """test user order routes"""
+        self.client.post(
+            '/api/v2/auth/login', data=json.dumps(self.admin), content_type='application/json')
+        token = json.loads(res.data.decode('utf-8'))['token']
+        data = jwt.decode(token, 'secret')
+        self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
+                         {'id': data["id"]})
+        current_user = self.cur.fetchone()
+        headers = {
+            'Content-Type': 'application/json',
+            'x-access-token': token}
+        if current_user['type'] == 'admin':
+            self.client.post(
+                '/api/v2/menu', data=json.dumps(self.food), headers=headers)
+
+        self.client.post(
+            '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
+        res = self.client.post(
+            '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
+        token = json.loads(res.data.decode('utf-8'))['token']
+        response = self.client.post(
+            '/v2/users/orders', data=json.dumps(self.order), headers=headers)
+        self.assertEqual(response.status_code, 201)
 
 
 # Make the tests conveniently executable
