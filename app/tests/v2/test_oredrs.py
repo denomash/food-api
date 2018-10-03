@@ -57,7 +57,7 @@ class TestMenu(unittest.TestCase):
             'x-access-token': token}
         response = self.client.get(
             '/v2/users/orders', headers=headers)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 404)
 
 
 # Make the tests conveniently executable
