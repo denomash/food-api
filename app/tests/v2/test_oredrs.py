@@ -141,7 +141,7 @@ class TestMenu(unittest.TestCase):
             '/api/v2/users/orders', headers=headers)
         self.assertEqual(response.status_code, 404)
 
-        # test user can post a meal
+        # test 201 user can post a meal
         response = self.client.post(
             '/api/v2/users/orders', headers=headers, data=json.dumps(self.order))
         self.assertEqual(response.status_code, 201)
@@ -150,6 +150,11 @@ class TestMenu(unittest.TestCase):
         response = self.client.get(
             '/api/v2/users/orders', headers=headers)
         self.assertEqual(response.status_code, 200)
+
+        # test 401 normal user can't access update status route
+        response = self.client.put(
+            '/v2/orders/1', headers=headers, data=json.dumps(self.status))
+        self.assertEqual(response.status_code, 401)
 
 
 # Make the tests conveniently executable
