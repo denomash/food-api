@@ -190,7 +190,7 @@ class TestMenu(unittest.TestCase):
 
         # test admin route 400 empty status
         response = self.client.put(
-            'api/v2/orders', headers=headers, data=json.dumps(self.status1))
+            'api/v2/orders/1', headers=headers, data=json.dumps(self.status1))
         self.assertEqual(response.status_code, 400)
 
 
