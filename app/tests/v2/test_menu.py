@@ -31,7 +31,7 @@ class TestMenu(unittest.TestCase):
         }
         self.admin = {
             'email': 'admin@gmail.com',
-            'password': 'aA1234567'
+            'password': 'aA123456'
         }
         self.food = {
             "item": "pizza",
