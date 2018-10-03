@@ -71,8 +71,6 @@ class TestMenu(unittest.TestCase):
 
         with self.app.app_context():
             self.db = test_db()
-            self.cur = self.db.cursor(
-                cursor_factory=psycopg2.extras.RealDictCursor)
 
     def test_401_token_missing(self):
         """test 401 missing token"""
