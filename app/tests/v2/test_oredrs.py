@@ -43,6 +43,11 @@ class TestMenu(unittest.TestCase):
             "quantity": 5,
             "address": "K-Road"
         }
+        self.order1 = {
+            "mealId": "",
+            "quantity": 5,
+            "address": "K-Road"
+        }
 
         with self.app.app_context():
             self.db = test_db()
@@ -95,6 +100,13 @@ class TestMenu(unittest.TestCase):
         headers = {
             'Content-Type': 'application/json',
             'x-access-token': token}
+
+        # test 400 empty meal id
+        response = self.client.post(
+            '/api/v2/users/orders', headers=headers, data=json.dumps(self.order1))
+        self.assertEqual(response.status_code, 201)
+
+        # test user can post a meal
         response = self.client.post(
             '/api/v2/users/orders', headers=headers, data=json.dumps(self.order))
         self.assertEqual(response.status_code, 201)
