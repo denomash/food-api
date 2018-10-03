@@ -69,7 +69,7 @@ class TestMenu(unittest.TestCase):
         self.status1 = {
             "status": ""
         }
-        self.status3 = {
+        self.status2 = {
             "status": "completed"
         }
 
