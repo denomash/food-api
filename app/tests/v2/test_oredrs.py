@@ -69,6 +69,9 @@ class TestMenu(unittest.TestCase):
         self.status1 = {
             "status": ""
         }
+        self.status3 = {
+            "status": "completed"
+        }
 
         with self.app.app_context():
             self.db = test_db()
@@ -196,6 +199,11 @@ class TestMenu(unittest.TestCase):
         # test admin route 400 invalid status name
         response = self.client.put(
             'api/v2/orders/1', headers=headers, data=json.dumps(self.status))
+        self.assertEqual(response.status_code, 400)
+
+        # test admin update status route 400 invalid order id 
+        response = self.client.put(
+            'api/v2/orders/12', headers=headers, data=json.dumps(self.status2))
         self.assertEqual(response.status_code, 400)
 
 
