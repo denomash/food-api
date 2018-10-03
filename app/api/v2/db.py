@@ -4,6 +4,7 @@ import psycopg2
 import psycopg2.extras
 import os
 from flask import current_app
+from werkzeug.security import generate_password_hash
 
 # local imports
 from .fastfood import queries, drop
@@ -52,8 +53,10 @@ def test_db():
         cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         for query in queries:
             cur.execute(query)
+        hashed_password = generate_password_hash(
+                'aA123456', method='sha256')
         cur.execute("INSERT INTO users (email, username, type, password) VALUES (%(email)s, %(username)s, %(type)s, %(password)s);", {
-            'email': 'admin@gmail.com', 'username': 'admin', 'type': 'admin', 'password': 'aA123456'})
+            'email': 'admin@gmail.com', 'username': 'admin', 'type': 'admin', 'password': hashed_password})
         connection.commit()
         return connection
     except (Exception, psycopg2.DatabaseError) as error:
