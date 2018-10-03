@@ -209,7 +209,7 @@ class TestMenu(unittest.TestCase):
         # test 200 admin update status route 
         response = self.client.put(
             'api/v2/orders/1', headers=headers, data=json.dumps(self.status2))
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 200)
 
 
 # Make the tests conveniently executable
