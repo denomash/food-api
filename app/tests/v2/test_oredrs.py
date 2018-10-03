@@ -73,22 +73,22 @@ class TestMenu(unittest.TestCase):
         resp = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.admin), content_type='application/json')
         token = json.loads(resp.data.decode('utf-8'))['token']
-        data = jwt.decode(token, 'secret')
-        self.cur.execute("SELECT * FROM users WHERE id = %(id)s ",
-                         {'id': data["id"]})
-        current_user = self.cur.fetchone()
         headers = {
             'Content-Type': 'application/json',
             'x-access-token': token}
-        if current_user['type'] == 'admin':
-            self.client.post(
-                '/api/v2/menu', data=json.dumps(self.order), headers=headers)
+        self.client.post(
+            '/api/v2/menu', data=json.dumps(self.order), headers=headers)
 
         self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.user1), content_type='application/json')
+        self.assertEqual(res.status_code, 200)
+
         token = json.loads(res.data.decode('utf-8'))['token']
+        headers = {
+            'Content-Type': 'application/json',
+            'x-access-token': token}
         response = self.client.post(
             '/v2/users/orders', data=json.dumps(self.order), headers=headers)
         self.assertEqual(response.status_code, 201)
