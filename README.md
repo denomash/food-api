@@ -111,11 +111,11 @@ Then use postman to test the following endpoints:
 | ------------------------     |----------- | -----------------   | ----------------- |
 | `/api/v2/promote/<orderId>`  |   PUT      | edit user role      |     Admin         |
 
-# API DOCUMENTATION
+## API DOCUMENTATION
 
 [Postman Docs]: https://documenter.getpostman.com/view/5475691/RWgnVz2g
 
-# HEROKU LINK
+## HEROKU LINK
 
 [Heroku Api]: https://fast-food--app-v2.herokuapp.com
 

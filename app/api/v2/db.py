@@ -3,11 +3,11 @@
 import psycopg2
 import psycopg2.extras
 import os
-from flask import current_app
 from werkzeug.security import generate_password_hash
 
 # local imports
 from .fastfood import queries, drop
+from config import configuration
 
 
 def connect_to(url):
@@ -17,7 +17,7 @@ def connect_to(url):
 
 def db():
 
-    url = current_app.config.get('DATABASE_URL')
+    url = configuration[os.getenv('APP_CONFIG')].DATABASE_URL
 
     # connect using psycopg2
     conn = connect_to(url)
