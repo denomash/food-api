@@ -23,6 +23,9 @@ class Ordersv2(Resource):
             cur.execute("SELECT * from orders")
             orders = cur.fetchall()
 
+            if not orders:
+                return {"Message" : "No orders found"}
+
             return {"Message": orders}, 200
         except (Exception, psycopg2.DatabaseError) as error:
             cur.execute("rollback;")

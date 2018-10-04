@@ -140,7 +140,6 @@ class LoginV2(Resource):
         data = LoginV2.parser.parse_args()
         password = data["password"]
         email = data["email"]
-        validate_email = re.compile(r"[^@\s]+@[^@\s]+\.[a-zA-Z0-9]+$")
 
         if not email:
             return {'Message': 'Email field is required'}, 400
@@ -148,7 +147,7 @@ class LoginV2(Resource):
             return {'Message': 'Password field is required'}, 400
 
         while True:
-            if not (re.match(validate_email, email)):
+            if not re.match(r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)", email):
                 return {"Message": "Make sure your email is valid"}, 400
             elif re.search('[a-z]', password) is None:
                 return {"Message": "Make sure your password has a small letter in it"}, 400
