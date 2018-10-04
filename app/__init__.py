@@ -2,6 +2,7 @@
 
 from flask import Flask, Blueprint, render_template
 from flask_restful import Api
+from flask import redirect
 
 # local imports
 from config import configuration
@@ -38,7 +39,7 @@ def create_app(configuration_name):
     @app.route('/')
     def index():
         """base route"""
-        return render_template('index.html')
+        return redirect("/apidocs")
 
     return app
 

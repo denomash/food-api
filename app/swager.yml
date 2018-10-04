@@ -1,0 +1,383 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: fast-food-api v2
+  description: 'Online ordering api'
+  contact: {}
+host: localhost:5000
+basePath: /api
+schemes:
+- http
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /v2/auth/login:
+    post:
+      description: This endpoint signs in a user with email and password
+      summary: Login
+      tags:
+      - auth
+      operationId: V2AuthLoginPost
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/LoginRequest'
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+  /v2/auth/signup:
+    post:
+      description: This endpoint signsup a user with username, email and password
+      summary: Register
+      tags:
+      - auth
+      operationId: V2AuthSignupPost
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/RegisterRequest'
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+  /v2/menu:
+    post:
+      description: This is an admin endpoint for adding food items
+      summary: Add a meal - admin
+      tags:
+      - menu
+      operationId: V2MenuPost
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/Add a meal  adminrequest'
+      - name: x-access-token
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+  /menu:
+    get:
+      description: This is a public endpoint for viewing items in the menu
+      summary: Get all meals
+      tags:
+      - menu
+      operationId: MenuGet
+      produces:
+      - application/json
+      parameters:
+      - name: x-access-token
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+  /v2/orders:
+    get:
+      description: Get all user orders -accessed by admins only
+      summary: Get all orders
+      tags:
+      - admin-orders
+      operationId: V2OrdersGet
+      produces:
+      - application/json
+      parameters:
+      - name: x-access-token
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+  /v2/orders/1:
+    get:
+      description: This endpoint gets an order by id and is only accessed by admins
+      summary: Get order by id
+      tags:
+      - admin-orders
+      operationId: V2Orders1Get
+      produces:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: x-access-token
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+    put:
+      description: This endpoint updates status by id and is only accessed by admins
+      summary: Update order status
+      tags:
+      - admin-orders
+      operationId: V2Orders1Put
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/UpdateOrderStatusrequest'
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: x-access-token
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+  /v2/users/orders:
+    get:
+      description: Logged in users can get a list of ordered food items
+      summary: Get user history
+      tags:
+      - users
+      operationId: V2UsersOrdersGet
+      produces:
+      - application/json
+      parameters:
+      - name: x-access-token
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+    post:
+      description: Logged in users can order food items
+      summary: Post an order
+      tags:
+      - users
+      operationId: V2UsersOrdersPost
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          type: object
+      - name: x-access-token
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+  /v2/promote/1:
+    post:
+      description: >
+        Get all users
+      summary: Users
+      tags:
+      - Users
+      operationId: V2Promote1Post2
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/UsersRequest'
+      - name: x-access-token
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+definitions:
+  LoginRequest:
+    title: LoginRequest
+    example:
+      email: new@gmail.com
+      password: aA2345678
+    type: object
+    properties:
+      email:
+        description: ''
+        example: new@gmail.com
+        type: string
+      password:
+        description: ''
+        example: aA2345678
+        type: string
+    required:
+    - email
+    - password
+  RegisterRequest:
+    title: RegisterRequest
+    example:
+      username: new
+      email: admin@gmail.com
+      password: bB123456
+      confirm password: bB123456
+    type: object
+    properties:
+      username:
+        description: ''
+        example: new
+        type: string
+      email:
+        description: ''
+        example: admin@gmail.com
+        type: string
+      password:
+        description: ''
+        example: bB123456
+        type: string
+      confirm password:
+        description: ''
+        example: bB123456
+        type: string
+    required:
+    - username
+    - email
+    - password
+    - confirm password
+  Add a meal  adminrequest:
+    title: Add a meal - adminRequest
+    example:
+      item: lamb
+      price: 250
+      description: soft
+    type: object
+    properties:
+      item:
+        description: ''
+        example: lamb
+        type: string
+      price:
+        description: ''
+        example: 250
+        type: integer
+        format: int32
+      description:
+        description: ''
+        example: soft
+        type: string
+    required:
+    - item
+    - price
+    - description
+  UpdateOrderStatusrequest:
+    title: Update order statusRequest
+    example:
+      status: changed
+    type: object
+    properties:
+      status:
+        description: ''
+        example: changed
+        type: string
+    required:
+    - status
+  PromoteUserrequest:
+    title: Promote userRequest
+    example:
+      type: admin
+    type: object
+    properties:
+      type:
+        description: ''
+        example: admin
+        type: string
+    required:
+    - type
+  UsersRequest:
+    title: UsersRequest
+    example:
+      type: admin
+    type: object
+    properties:
+      type:
+        description: ''
+        example: admin
+        type: string
+    required:
+    - type
+tags:
+- name: auth
+- name: menu
+- name: admin-orders
+- name: users
+- name: promote
+- name: Users
+  description: Get all users

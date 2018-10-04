@@ -66,7 +66,7 @@ class TestMenu(unittest.TestCase):
             "status": ""
         }
         self.status2 = {
-            "status": "completed"
+            "status": "Complete"
         }
 
         with self.app.app_context():
