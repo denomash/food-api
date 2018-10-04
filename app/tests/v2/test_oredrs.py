@@ -147,15 +147,15 @@ class TestMenu(unittest.TestCase):
             '/api/v2/users/orders', headers=headers, data=json.dumps(self.order4))
         self.assertEqual(response.status_code, 400)
 
+        # test 404 no user order history found
+        response = self.client.get(
+            '/api/v2/users/orders', headers=headers)
+        self.assertEqual(response.status_code, 404)
+
         # test 201 user can post an order
         response = self.client.post(
             '/api/v2/users/orders', headers=headers, data=json.dumps(self.order))
         self.assertEqual(response.status_code, 201)
-
-        # test 400 order already exist
-        response = self.client.post(
-            '/api/v2/users/orders', headers=headers, data=json.dumps(self.order))
-        self.assertEqual(response.status_code, 400)
 
         # test 200 user order history found
         response = self.client.get(
