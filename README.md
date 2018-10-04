@@ -110,14 +110,16 @@ Then use postman to test the following endpoints:
 | `/api/v2/orders`             |   Get      | get all orders      |     Admin         |
 | ------------------------     |----------- | -----------------   | ----------------- |
 | `/api/v2/promote/<orderId>`  |   PUT      | edit user role      |     Admin         |
+| ------------------------     |----------- | -----------------   | ----------------- |
+| `/api/v2/api/v2/users`       |   GET      | get all users       |     Admin         |
 
 ## API DOCUMENTATION
 
-[Postman Docs]: https://documenter.getpostman.com/view/5475691/RWgnVz2g
+[Postman Docs](https://documenter.getpostman.com/view/5475691/RWgnVz2g)
 
 ## HEROKU LINK
 
-[Heroku Api]: https://fast-food--app-v2.herokuapp.com
+[Heroku Api](https://fast-food--app-v2.herokuapp.com)
 
 ## Author
 
