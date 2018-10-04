@@ -61,6 +61,8 @@ RUN `pytest --cov=app/tests/`
 
 Then use postman to test the following endpoints:
 
+#VERSION 1
+
 |   # Endpoint       |  # Methods | # Description       |
 | -------------      |----------- | ------------------  | 
 |`/api/v1/orders`    |   GET      |  gets all orders    |
@@ -76,3 +78,47 @@ Then use postman to test the following endpoints:
 |`/api/v1/signup`    |   POST     |signs up a user      |
 |--------------      |----------- | -----------------   |
 |`/api/v1/login`     |   POST     |logs in a user       |
+
+
+#VERSION 2
+
+##Auth
+
+|   # Endpoint          |  # Methods | # Description       |
+| -------------         |----------- | ------------------  | 
+|`/api/v2/auth/signup`  |   POST     |  registers a user   |
+| ------------          | ---------- | -----------------   |
+|`/api/v2/auth/login`   |   POST     |  signs in a user    |
+|--------------         |----------- | -----------------   |
+
+##Endpoints
+
+|      # Endpoint              | # Methods  |  # Description      | #  Auth type      |
+| ------------------------     |----------- | ------------------  | ----------------- | 
+|   `/api/v2/menu`             |   GET      |  gets all meals     |     Public        |
+| ------------------------     | ---------- | -----------------   | ----------------- |
+|   `/api/v2/menu`             |   POST     | posts a new meal    |     Admin         |
+| ------------------------     |----------- | -----------------   | ----------------- |
+|  `/api/v2/users/orders`      |   POST     | user posts an order |     Client        |
+| ------------------------     |----------- | -----------------   | ----------------- |
+|  `/api/v2/users/orders`      |   GET      | get user history    |     Client        |
+| ------------------------     |----------- | -----------------   | ----------------- |
+| `/api/v2/orders/<orderId>`   |   GET      | get user order by id|     Admin         |
+| ------------------------     |----------- | -----------------   | ----------------- |
+| `/api/v2/orders/<orderId>`   |   PUT      | edit order status   |     Admin         |
+| ------------------------     |----------- | -----------------   | ----------------- |
+| `/api/v2/orders`             |   Get      | get all orders      |     Admin         |
+| ------------------------     |----------- | -----------------   | ----------------- |
+| `/api/v2/promote/<orderId>`  |   PUT      | edit user role      |     Admin         |
+
+#API DOCUMENTATION
+
+[Postman Docs]: https://documenter.getpostman.com/view/5475691/RWgnVz2g
+
+#HEROKU LINK
+
+[Heroku Api]: https://fast-food--app-v2.herokuapp.com
+
+##Author
+
+Dennis Macharia
