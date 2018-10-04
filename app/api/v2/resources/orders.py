@@ -53,8 +53,8 @@ class EditOrderv2(Resource):
 
         if not status:
             return {'Message': 'Status can\'t be empty'}, 400
-        elif status not in ('pending', 'completed'):
-            return {'Message': 'Status must be either pending or completed'}, 400
+        elif status not in ('New', 'Processing', 'Cancelled', 'Complete'):
+            return {'Message': 'Status must be either  New, Processing, Cancelled or Complete'}, 400
 
         try:
             conn = db()
@@ -134,7 +134,7 @@ class UserOrder(Resource):
         meal_id = data["mealId"]
         quantity = data["quantity"]
         address = data["address"]
-        status = 'pending'
+        status = 'New'
         user_id = current_user["id"]
 
         if not meal_id:
@@ -156,13 +156,6 @@ class UserOrder(Resource):
             if res is None:
                 return {'Message': 'Meal does not exist'}, 400
 
-            cur.execute(
-                "SELECT * FROM orders WHERE meal_id = %(mealId)s", {'mealId': meal_id})
-
-            res2 = cur.fetchone()
-            if res2 is not None:
-                return {"Message": "Order already exist"}, 400
-
             cur.execute("INSERT INTO orders (user_id, meal_id, quantity, address, status) VALUES (%(user_id)s, %(meal_id)s, %(quantity)s, %(address)s, %(status)s)", {
                 'user_id': user_id, 'meal_id': meal_id, 'quantity': quantity, 'address': address, 'status': status})
             conn.commit()
@@ -182,7 +175,8 @@ class UserOrder(Resource):
 
             cur.execute("SELECT * FROM orders WHERE user_id = %(user_id)s",
                         {'user_id': current_user['id']})
-            # check if order exist
+
+            # check if order history exist
             res = cur.fetchall()
             if not res:
                 return {'Message': 'No order history'}, 404
