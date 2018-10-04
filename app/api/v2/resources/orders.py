@@ -144,8 +144,6 @@ class UserOrder(Resource):
         if not quantity:
             return {'Message': 'Quantity field is required'}, 400
 
-        print(meal_id)
-
         try:
             conn = db()
             cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -157,6 +155,13 @@ class UserOrder(Resource):
             res = cur.fetchone()
             if res is None:
                 return {'Message': 'Meal does not exist'}, 400
+
+            cur.execute(
+                "SELECT * FROM orders WHERE meal_id = %(mealId)s", {'mealId': meal_id})
+
+            res2 = cur.fetchone()
+            if res2 is not None:
+                return {"Message": "Order already exist"}, 400
 
             cur.execute("INSERT INTO orders (user_id, meal_id, quantity, address, status) VALUES (%(user_id)s, %(meal_id)s, %(quantity)s, %(address)s, %(status)s)", {
                 'user_id': user_id, 'meal_id': meal_id, 'quantity': quantity, 'address': address, 'status': status})
