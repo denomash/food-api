@@ -27,7 +27,8 @@ def create_app(configuration_name):
     app.config.from_object(configuration[configuration_name])
 
     # initialize database
-    init_db()
+    with app.app_context():
+        init_db()
 
     # register blueprints
     app.register_blueprint(api_blueprint, url_prefix='/api')
