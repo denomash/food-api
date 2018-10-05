@@ -64,6 +64,8 @@ class Registerv2(Resource):
         while True:
             if not re.match(r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)", email):
                 return {"Message": "Make sure your email is valid"}, 400
+            elif not re.match(r"(.*\S.*)", username):
+                return {"Message": "Username can\'t be blank"}
             elif re.search('[a-z]', password) is None:
                 return {"Message": "Make sure your password has a small letter in it"}, 400
             elif re.search('[0-9]', password) is None:

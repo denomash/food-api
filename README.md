@@ -12,6 +12,7 @@ This is an api for ordering fast food.
 * virtualenv
 * virtualenvwrapper
 * postman
+* postgres
 
  
 # How to install and use the api
@@ -49,9 +50,18 @@ Install required packages:
 
 Then run(each at a time):
 
+`export DATABASE_URL=postgres://oxploeihmfvuyb:8ac9f12a5fa8db914f065d055918a818280fc7c950414e2704649e565275c956@ec2-23-23-80-20.compute-1.amazonaws.com:5432/d9m63tfl17duip`
 
-`export APP_CONFIG=development`
+
+`export SECRET_KEY=secret`
+
+
+`export APP_CONFIG=production`
+
+
 `export FLASK_APP=run.py`
+
+
 `flask run`
 
 How to test:
@@ -115,7 +125,7 @@ Then use postman to test the following endpoints:
 
 ## API DOCUMENTATION
 
-[Postman Docs](https://documenter.getpostman.com/view/5475691/RWgnVz2g)
+[Apiary Docs](https://foodapiv2.docs.apiary.io/#)
 
 ## HEROKU LINK
 
