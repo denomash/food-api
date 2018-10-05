@@ -14,7 +14,7 @@ class Users(Resource):
     """docstring for Promote"""
 
     @check_auth
-    def post(current_user, self):
+    def get(current_user, self):
         if current_user["type"] != "admin":
             return {"Message": "Must be an admin"}
 
