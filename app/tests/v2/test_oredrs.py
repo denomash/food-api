@@ -66,7 +66,7 @@ class TestMenu(unittest.TestCase):
             "status": ""
         }
         self.status2 = {
-            "status": "completed"
+            "status": "Complete"
         }
 
         with self.app.app_context():
@@ -152,7 +152,7 @@ class TestMenu(unittest.TestCase):
             '/api/v2/users/orders', headers=headers)
         self.assertEqual(response.status_code, 404)
 
-        # test 201 user can post a meal
+        # test 201 user can post an order
         response = self.client.post(
             '/api/v2/users/orders', headers=headers, data=json.dumps(self.order))
         self.assertEqual(response.status_code, 201)

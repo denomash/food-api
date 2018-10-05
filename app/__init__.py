@@ -1,6 +1,6 @@
 # app/__init__.py
 
-from flask import Flask, Blueprint, render_template
+from flask import Flask, Blueprint, redirect
 from flask_restful import Api
 
 # local imports
@@ -12,6 +12,7 @@ from .api.v2.resources.orders import Ordersv2, EditOrderv2, UserOrder
 from .api.v2.resources.auth import Registerv2, LoginV2
 from .api.v2.resources.food import Menu
 from .api.v2.resources.promote import Promote
+from .api.v2.resources.users import Users
 
 # Inisialize blueprint and flask-restful
 api_blueprint = Blueprint('api', __name__)
@@ -27,7 +28,8 @@ def create_app(configuration_name):
     app.config.from_object(configuration[configuration_name])
 
     # initialize database
-    init_db()
+    with app.app_context():
+        init_db()
 
     # register blueprints
     app.register_blueprint(api_blueprint, url_prefix='/api')
@@ -36,8 +38,8 @@ def create_app(configuration_name):
     @app.route('/')
     def index():
         """base route"""
-        return render_template('index.html')
-      
+        return redirect("https://foodapiv2.docs.apiary.io/#")
+        
     return app
 
 # Resourses
@@ -53,3 +55,4 @@ api.add_resource(LoginV2, '/v2/auth/login')
 api.add_resource(Menu, '/v2/menu')
 api.add_resource(UserOrder, '/v2/users/orders')
 api.add_resource(Promote, '/v2/promote/<int:user_id>')
+api.add_resource(Users, '/v2/users')

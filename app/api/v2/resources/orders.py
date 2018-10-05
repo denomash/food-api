@@ -23,6 +23,9 @@ class Ordersv2(Resource):
             cur.execute("SELECT * from orders")
             orders = cur.fetchall()
 
+            if not orders:
+                return {"Message" : "No orders found"}
+
             return {"Message": orders}, 200
         except (Exception, psycopg2.DatabaseError) as error:
             cur.execute("rollback;")
@@ -53,8 +56,8 @@ class EditOrderv2(Resource):
 
         if not status:
             return {'Message': 'Status can\'t be empty'}, 400
-        elif status not in ('pending', 'completed'):
-            return {'Message': 'Status must be either pending or completed'}, 400
+        elif status not in ('New', 'Processing', 'Cancelled', 'Complete'):
+            return {'Message': 'Status must be either  New, Processing, Cancelled or Complete'}, 400
 
         try:
             conn = db()
@@ -134,7 +137,7 @@ class UserOrder(Resource):
         meal_id = data["mealId"]
         quantity = data["quantity"]
         address = data["address"]
-        status = 'pending'
+        status = 'New'
         user_id = current_user["id"]
 
         if not meal_id:
@@ -143,8 +146,6 @@ class UserOrder(Resource):
             return {'Message': 'Address field is required'}, 400
         if not quantity:
             return {'Message': 'Quantity field is required'}, 400
-
-        print(meal_id)
 
         try:
             conn = db()
@@ -177,7 +178,8 @@ class UserOrder(Resource):
 
             cur.execute("SELECT * FROM orders WHERE user_id = %(user_id)s",
                         {'user_id': current_user['id']})
-            # check if order exist
+
+            # check if order history exist
             res = cur.fetchall()
             if not res:
                 return {'Message': 'No order history'}, 404
