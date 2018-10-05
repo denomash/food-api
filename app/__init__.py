@@ -1,6 +1,6 @@
 # app/__init__.py
 
-from flask import Flask, Blueprint, render_template
+from flask import Flask, Blueprint, redirect
 from flask_restful import Api
 
 # local imports
@@ -38,7 +38,7 @@ def create_app(configuration_name):
     @app.route('/')
     def index():
         """base route"""
-        return {"Welcome to heroku"}
+        return redirect("https://foodapiv2.docs.apiary.io/#")
 
     return app
 
