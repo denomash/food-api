@@ -39,7 +39,7 @@ def create_app(configuration_name):
     def index():
         """base route"""
         return redirect("https://foodapiv2.docs.apiary.io/#")
-
+        
     return app
 
 # Resourses
