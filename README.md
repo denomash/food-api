@@ -115,7 +115,7 @@ Then use postman to test the following endpoints:
 
 ## API DOCUMENTATION
 
-[Postman Docs](https://documenter.getpostman.com/view/5475691/RWgnVz2g)
+[Apiary Docs](https://foodapiv2.docs.apiary.io/#)
 
 ## HEROKU LINK
 
