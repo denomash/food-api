@@ -31,7 +31,7 @@ class TestMenu(unittest.TestCase):
 
     def test_view_all_users_endpoint(self):
         """test view all users endpoint"""
-        
+
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.admin), content_type='application/json')
         self.assertEqual(res.status_code, 200)
@@ -40,10 +40,10 @@ class TestMenu(unittest.TestCase):
             'Content-Type': 'application/json',
             'x-access-token': token}
 
-        # test 404 no users found
+        # test 200 users found
         response = self.client.get(
             '/api/v2/users', headers=headers)
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
 
 
 # Make the tests conveniently executable
