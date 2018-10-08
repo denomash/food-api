@@ -32,7 +32,6 @@ class TestMenu(unittest.TestCase):
         with self.app.app_context():
             self.db = test_db()
 
-    
     def test_200_user_promoted_successfully(self):
         """test 200 successfull login"""
         self.client.post(
@@ -40,8 +39,13 @@ class TestMenu(unittest.TestCase):
         res = self.client.post(
             '/api/v2/auth/login', data=json.dumps(self.admin), content_type='application/json')
         self.assertEqual(res.status_code, 200)
+        token = json.loads(res.data.decode('utf-8'))['token']
+        headers = {
+            'Content-Type': 'application/json',
+            'x-access-token': token}
+
         response = self.client.post(
-            '/api/v2/promote/1', data=json.dumps(self.type), content_type='application/json')
+            '/api/v2/promote/1', headers=headers, data=json.dumps(self.type))
         self.assertEqual(response.status_code, 200)
 
 # Make the tests conveniently executable
