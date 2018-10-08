@@ -16,7 +16,7 @@ class Users(Resource):
     @check_auth
     def get(current_user, self):
         if current_user["type"] != "admin":
-            return {"Message": "Must be an admin"}
+            return {"Message": "Must be an admin"}, 401
 
         try:
             conn = db()
@@ -27,7 +27,7 @@ class Users(Resource):
             if res is None:
                 return {"Message": "No users found"}, 404
 
-            return {"Users": res}
+            return {"Users": res}, 200
 
         except (Exception, psycopg2.DatabaseError) as error:
             cur.execute("rollback;")
