@@ -31,6 +31,9 @@ class TestMenu(unittest.TestCase):
         self.type1 = {
             'type': ''
         }
+        self.type2 = {
+            'type': 'admi'
+        }
 
         with self.app.app_context():
             self.db = test_db()
@@ -50,6 +53,11 @@ class TestMenu(unittest.TestCase):
         # test 400 type empty
         response = self.client.post(
             '/api/v2/promote/1', headers=headers, data=json.dumps(self.type1))
+        self.assertEqual(response.status_code, 400)
+
+        # test 400 wrong type
+        response = self.client.post(
+            '/api/v2/promote/1', headers=headers, data=json.dumps(self.type2))
         self.assertEqual(response.status_code, 400)
 
         # test 200 user promoted successfully
