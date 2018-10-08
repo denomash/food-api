@@ -28,11 +28,14 @@ class TestMenu(unittest.TestCase):
         self.type = {
             'type': 'admin'
         }
+        self.type = {
+            'type': ''
+        }
 
         with self.app.app_context():
             self.db = test_db()
 
-    def test_200_user_promoted_successfully(self):
+    def test_promote_endpoint(self):
         """test 200 successfull login"""
         self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
@@ -44,6 +47,12 @@ class TestMenu(unittest.TestCase):
             'Content-Type': 'application/json',
             'x-access-token': token}
 
+        # test 400 type empty
+        response = self.client.post(
+            '/api/v2/promote/1', headers=headers, data=json.dumps(self.type1))
+        self.assertEqual(response.status_code, 400)
+
+        # test 200 user promoted successfully
         response = self.client.post(
             '/api/v2/promote/1', headers=headers, data=json.dumps(self.type))
         self.assertEqual(response.status_code, 200)
