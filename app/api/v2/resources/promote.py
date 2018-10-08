@@ -30,9 +30,9 @@ class Promote(Resource):
         user_type = data['type']
 
         if not user_type:
-            return {"Message": "Type to promote can\'t be blank"}
+            return {"Message": "Type to promote can\'t be blank"}, 400
         elif user_type not in ('admin', 'client'):
-            return {"Message": "Type must either be client or admin"}
+            return {"Message": "Type must either be client or admin"}, 400
 
         try:
             conn = db()
@@ -51,7 +51,7 @@ class Promote(Resource):
             user['type'] = res['type']
             user['email'] = res['email']
 
-            return {"Message": user}
+            return {"Message": user}, 200
 
         except (Exception, psycopg2.DatabaseError) as error:
             cur.execute("rollback;")
