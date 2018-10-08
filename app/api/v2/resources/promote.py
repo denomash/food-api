@@ -41,7 +41,7 @@ class Promote(Resource):
                         {'user_id': user_id})
             res = cur.fetchone()
             if res is None:
-                return {"Message": "User with the id does not exist"}
+                return {"Message": "User with the id does not exist"}, 404
             cur.execute("UPDATE users SET type=%s WHERE id=%s;",
                         (user_type, user_id))            
             conn.commit()

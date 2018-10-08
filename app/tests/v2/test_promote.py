@@ -65,6 +65,11 @@ class TestMenu(unittest.TestCase):
             '/api/v2/promote/1', headers=headers, data=json.dumps(self.type))
         self.assertEqual(response.status_code, 200)
 
+        # test 404 user does not exist
+        response = self.client.post(
+            '/api/v2/promote/11', headers=headers, data=json.dumps(self.type))
+        self.assertEqual(response.status_code, 404)
+
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()
