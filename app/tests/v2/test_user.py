@@ -36,6 +36,7 @@ class TestMenu(unittest.TestCase):
             '/api/v2/auth/login', data=json.dumps(self.admin), content_type='application/json')
         self.assertEqual(res.status_code, 200)
         token = json.loads(res.data.decode('utf-8'))['token']
+        
         headers = {
             'Content-Type': 'application/json',
             'x-access-token': token}
