@@ -43,7 +43,7 @@ class Promote(Resource):
             if res is None:
                 return {"Message": "User with the id does not exist"}, 404
             cur.execute("UPDATE users SET type=%s WHERE id=%s;",
-                        (user_type, user_id))            
+                        (user_type, user_id))
             conn.commit()
             user = {}
             user['id'] = res['id']
@@ -54,6 +54,8 @@ class Promote(Resource):
             return {"Message": user}, 200
 
         except (Exception, psycopg2.DatabaseError) as error:
+            conn = db()
+            cur = conn.cursor()
             cur.execute("rollback;")
             print(error)
             return {'Message': 'current transaction is aborted'}, 500

@@ -30,6 +30,8 @@ class Users(Resource):
             return {"Users": res}, 200
 
         except (Exception, psycopg2.DatabaseError) as error:
+            conn = db()
+            cur = conn.cursor()
             cur.execute("rollback;")
             print(error)
             return {'Message': 'current transaction is aborted'}, 500
