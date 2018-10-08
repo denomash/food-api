@@ -39,7 +39,7 @@ class TestMenu(unittest.TestCase):
             self.db = test_db()
 
     def test_promote_endpoint(self):
-        """test 200 successfull login"""
+        """test promote user endpoint"""
         self.client.post(
             '/api/v2/auth/signup', data=json.dumps(self.user), content_type='application/json')
         res = self.client.post(
