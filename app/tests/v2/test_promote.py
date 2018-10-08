@@ -28,7 +28,7 @@ class TestMenu(unittest.TestCase):
         self.type = {
             'type': 'admin'
         }
-        self.type = {
+        self.type1 = {
             'type': ''
         }
 
