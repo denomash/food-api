@@ -30,7 +30,6 @@ def init_db():
     try:
         connection = db()
         connection.autocommit = True
-        teardown()
 
         # activate connection cursor
         cur = connection.cursor()
