@@ -48,6 +48,7 @@ def create_app(configuration_name):
     def menu():
         """menu route"""
         return render_template('UI/menu.html')
+      
     return app
 
 # Resourses
