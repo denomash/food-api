@@ -16,6 +16,12 @@ class Menu(Resource):
     parser = reqparse.RequestParser()
 
     parser.add_argument(
+        'image',
+        type=str,
+        required=True,
+        help="Image is required"
+    )
+    parser.add_argument(
         'item',
         type=str,
         required=True,
@@ -61,10 +67,13 @@ class Menu(Resource):
             return {"Message": "Must be an admin"}, 401
 
         data = Menu.parser.parse_args()
+        image = data["image"]
         item = data["item"]
         price = data["price"]
         description = data["description"]
 
+        if not image:
+            return {'Message': 'Image field is required'}, 400
         if not item:
             return {'Message': 'Food item field is required'}, 400
         if not price:
@@ -82,8 +91,8 @@ class Menu(Resource):
             # check if order exist
             if cur.fetchone() is not None:
                 return {'Message': 'Food already exist'}, 400
-            cur.execute("INSERT INTO meals (food, price, description) VALUES (%(food)s, %(price)s, %(description)s);", {
-                'food': data["item"], 'price': data["price"], 'description': data["description"]})
+            cur.execute("INSERT INTO meals (food, image, price, description) VALUES (%(food)s, %(image)s, %(price)s, %(description)s);", {
+                'food': data["item"], 'price': data["price"], 'image': data["image"], 'description': data["description"]})
             conn.commit()
             return {'Message': 'Meal created successfully'}, 201
         except (Exception, psycopg2.DatabaseError) as error:

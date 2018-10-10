@@ -1,3 +1,5 @@
+# app/api/v2/fastfood.py
+
 tb1 = """CREATE TABLE if not exists users (
     id bigserial UNIQUE PRIMARY KEY,
     email varchar(50) NOT NULL UNIQUE,
@@ -20,6 +22,7 @@ tb3 = """CREATE TABLE if not exists meals (
     meal_id serial UNIQUE PRIMARY KEY,
     food varchar(50) NOT NULL,
     price real NOT NULL,
+    image text NOT NULL,
     description text NOT NULL 
     );"""
 

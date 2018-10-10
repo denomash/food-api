@@ -1,7 +1,8 @@
 # app/__init__.py
 
-from flask import Flask, Blueprint, redirect
+from flask import Flask, Blueprint, redirect, render_template, url_for
 from flask_restful import Api
+from flask_cors import CORS
 
 # local imports
 from config import configuration
@@ -27,6 +28,8 @@ def create_app(configuration_name):
     # Load the config file
     app.config.from_object(configuration[configuration_name])
 
+    cors = CORS(app, resources={r"/*": {"origins": "*"}})
+
     # initialize database
     with app.app_context():
         init_db()
@@ -39,7 +42,13 @@ def create_app(configuration_name):
     def index():
         """base route"""
         return redirect("https://foodapiv2.docs.apiary.io/#")
-        
+
+    # menu route
+    @app.route('/menu', methods=['GET'])
+    def menu():
+        """menu route"""
+        return render_template('UI/menu.html')
+      
     return app
 
 # Resourses
