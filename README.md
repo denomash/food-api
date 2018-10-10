@@ -126,7 +126,7 @@ Then use postman to test the following endpoints:
 ## VIEWS Endpoints
 |      # Endpoint                                |  # Description      | #  Auth type      |
 | ------------------------------------------     | ------------------  | ----------------- | 
-|`https://fast-food--app-v2.herokuapp.com/menu`  |  gets all meals     |     Public        |
+|`https://fast-food--app-v2.herokuapp.com/menu`  |     view Menu       |     Public        |
 
 
 ## API DOCUMENTATION
