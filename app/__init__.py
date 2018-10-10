@@ -1,6 +1,6 @@
 # app/__init__.py
 
-from flask import Flask, Blueprint, redirect
+from flask import Flask, Blueprint, redirect, render_template, url_for
 from flask_restful import Api
 
 # local imports
@@ -40,6 +40,11 @@ def create_app(configuration_name):
         """base route"""
         return redirect("https://foodapiv2.docs.apiary.io/#")
 
+    # menu route
+    @app.route('/menu', methods=['GET'])
+    def menu():
+        """menu route"""
+        return render_template('UI/menu.html')
     return app
 
 # Resourses
