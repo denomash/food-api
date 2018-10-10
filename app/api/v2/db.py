@@ -38,6 +38,8 @@ def init_db():
             cur.execute(query)
         connection.commit()
     except (Exception, psycopg2.DatabaseError) as error:
+        conn = db()
+        cur = conn.cursor()
         print("Database not connected")
         print(error)
 
@@ -54,12 +56,14 @@ def test_db():
         for query in queries:
             cur.execute(query)
         hashed_password = generate_password_hash(
-                'aA123456', method='sha256')
+            'aA123456', method='sha256')
         cur.execute("INSERT INTO users (email, username, type, password) VALUES (%(email)s, %(username)s, %(type)s, %(password)s);", {
             'email': 'admin@gmail.com', 'username': 'admin', 'type': 'admin', 'password': hashed_password})
         connection.commit()
         return connection
     except (Exception, psycopg2.DatabaseError) as error:
+        conn = db()
+        cur = conn.cursor()
         print("Database not connected")
         print(error)
 
@@ -76,5 +80,7 @@ def teardown():
             cur.execute(table)
         connection.commit()
     except (Exception, psycopg2.DatabaseError) as error:
+        conn = db()
+        cur = conn.cursor()
         print("Database not connected")
         print(error)

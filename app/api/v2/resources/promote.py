@@ -30,9 +30,9 @@ class Promote(Resource):
         user_type = data['type']
 
         if not user_type:
-            return {"Message": "Type to promote can\'t be blank"}
+            return {"Message": "Type to promote can\'t be blank"}, 400
         elif user_type not in ('admin', 'client'):
-            return {"Message": "Type must either be client or admin"}
+            return {"Message": "Type must either be client or admin"}, 400
 
         try:
             conn = db()
@@ -41,8 +41,9 @@ class Promote(Resource):
                         {'user_id': user_id})
             res = cur.fetchone()
             if res is None:
-                return {"Message": "User with the id does not exist"}
-            cur.execute("UPDATE users SET type=%s WHERE id=%s;", (user_type, user_id))
+                return {"Message": "User with the id does not exist"}, 404
+            cur.execute("UPDATE users SET type=%s WHERE id=%s;",
+                        (user_type, user_id))
             conn.commit()
             user = {}
             user['id'] = res['id']
@@ -50,9 +51,11 @@ class Promote(Resource):
             user['type'] = res['type']
             user['email'] = res['email']
 
-            return {"Message": user}
+            return {"Message": user}, 200
 
         except (Exception, psycopg2.DatabaseError) as error:
+            conn = db()
+            cur = conn.cursor()
             cur.execute("rollback;")
             print(error)
             return {'Message': 'current transaction is aborted'}, 500

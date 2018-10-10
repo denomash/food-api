@@ -48,6 +48,7 @@ class Menu(Resource):
 
             return {"Meals": meals}, 200
         except (Exception, psycopg2.DatabaseError) as error:
+            conn = db()
             cur = conn.cursor()
             cur.execute("rollback;")
             print(error)
@@ -86,6 +87,8 @@ class Menu(Resource):
             conn.commit()
             return {'Message': 'Meal created successfully'}, 201
         except (Exception, psycopg2.DatabaseError) as error:
+            conn = db()
+            cur = conn.cursor()
             cur.execute("rollback;")
             print(error)
             return {'Message': 'current transaction is aborted'}, 500
