@@ -12,9 +12,10 @@ tb1 = """CREATE TABLE if not exists users (
 tb2 = """CREATE TABLE if not exists orders (
     order_id serial UNIQUE PRIMARY KEY,
     user_id INT NOT NULL,
+    image text NOT NULL,
     meal_id INT NOT NULL,
     status text NOT NULL,
-    address text NOT NULL ,
+    address text NOT NULL,
     quantity integer NOT NULL
     );"""
 

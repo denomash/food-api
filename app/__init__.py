@@ -47,7 +47,18 @@ def create_app(configuration_name):
     @app.route('/menu', methods=['GET'])
     def menu():
         """menu route"""
-        return render_template('UI/menu.html')
+        return render_template('UI/menu.html', title="Menu")
+
+    @app.route('/auth/signup', methods=['GET', 'POST'])
+    def signup():
+        """signup route"""
+        return render_template('UI/signup.html', title="Signup")
+
+    @app.route('/auth/login', methods=['GET', 'POST'])
+    def login():
+        """login route"""
+        return render_template('UI/login.html', title="Login")
+
     return app
 
 # Resourses

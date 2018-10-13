@@ -7,7 +7,8 @@
     <meta name="keywords" content="Fast food">
     <meta name="author" content="Dennis Macharia">
     <title>Fast-Food-Fast | Register</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/signup.js') }}"></script>
   </head>
   <body>
 
@@ -25,18 +26,21 @@
           
           <div id="sidereg">
           	<h2>Register</h2>
-          	<form>  
+          	<form action="" id="regform" method="POST">  
             <div class="container">
               <label ><b>Username</b></label>
-              <input type="text" placeholder="Enter Username" required>
+              <input type="text" placeholder="Enter Username" id="username" required>
 
               <label for="Email"><b>Email</b></label>
-              <input type="text" placeholder="Enter Email" required>
+              <input type="text" placeholder="Enter Email" id="email" required>
 
               <label for="psw"><b>Password</b></label>
-              <input type="password" placeholder="Enter Password" required>
+              <input type="password" placeholder="Enter Password" id="password" required>
+
+              <label for="psw"><b>Confirm Password</b></label>
+              <input type="password" placeholder="Enter Confirm Password" id="confirm_password" required>
         
-              <button type="submit">Register</button>
+              <button type="submit"  id="submit">Register</button>
             </div>
           </form>
 

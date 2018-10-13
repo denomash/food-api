@@ -18,7 +18,7 @@ def check_auth(f):
             token = request.headers['x-access-token']
 
         if not token:
-            return {'message': 'You don\'t have a token!'}, 401
+            return {'Message': 'You don\'t have a token!'}, 401
 
         try:
             data = jwt.decode(token, 'secret')
@@ -30,7 +30,7 @@ def check_auth(f):
             current_user = cur.fetchone()
 
         except:
-            return {'message': 'Invalid token!'}, 401
+            return {'Message': 'Invalid token!'}, 401
 
         return f(current_user, *args, **kwargs)
 
