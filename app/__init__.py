@@ -6,9 +6,9 @@ from flask_cors import CORS
 
 # local imports
 from config import configuration
+from .api.v2.db import init_db
 from .api.v1.resources.orders import Get_orders, Orders, Orderbyid
 from .api.v1.resources.auth import Register, Login
-from .api.v2.db import init_db
 from .api.v2.resources.orders import Ordersv2, EditOrderv2, UserOrder
 from .api.v2.resources.auth import Registerv2, LoginV2
 from .api.v2.resources.food import Menu
