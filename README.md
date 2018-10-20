@@ -123,11 +123,6 @@ Then use postman to test the following endpoints:
 | ------------------------     |----------- | -----------------   | ----------------- |
 | `/api/v2/api/v2/users`       |   GET      | get all users       |     Admin         |
 
-## VIEWS Endpoints
-|      # Endpoint                                |  # Description      | #  Auth type      |
-| ------------------------------------------     | ------------------  | ----------------- | 
-|`https://fast-food--app-v2.herokuapp.com/menu`  |     view Menu       |     Public        |
-
 
 ## API DOCUMENTATION
 

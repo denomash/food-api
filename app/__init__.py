@@ -1,6 +1,6 @@
 # app/__init__.py
 
-from flask import Flask, Blueprint, redirect, render_template, url_for
+from flask import Flask, Blueprint, redirect, render_template
 from flask_restful import Api
 from flask_cors import CORS
 
@@ -42,22 +42,6 @@ def create_app(configuration_name):
     def index():
         """base route"""
         return redirect("https://foodapiv2.docs.apiary.io/#")
-
-    # menu route
-    @app.route('/menu', methods=['GET'])
-    def menu():
-        """menu route"""
-        return render_template('UI/menu.html', title="Menu")
-
-    @app.route('/auth/signup', methods=['GET', 'POST'])
-    def signup():
-        """signup route"""
-        return render_template('UI/signup.html', title="Signup")
-
-    @app.route('/auth/login', methods=['GET', 'POST'])
-    def login():
-        """login route"""
-        return render_template('UI/login.html', title="Login")
 
     return app
 
