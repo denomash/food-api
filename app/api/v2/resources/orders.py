@@ -4,6 +4,7 @@ from flask_restful import Resource, reqparse
 import psycopg2
 import psycopg2.extras
 
+
 # local imports
 from ..db import db
 from ..checkauth import check_auth
@@ -24,9 +25,9 @@ class Ordersv2(Resource):
             orders = cur.fetchall()
 
             if not orders:
-                return {"Message": "No orders found"}, 404
+                return {"Orders": "No orders found"}, 404
 
-            return {"Message": orders}, 200
+            return {"Orders": orders}, 200
         except (Exception, psycopg2.DatabaseError) as error:
             conn = db()
             cur = conn.cursor()
@@ -165,8 +166,8 @@ class UserOrder(Resource):
             if res is None:
                 return {'Message': 'Meal does not exist'}, 400
 
-            cur.execute("INSERT INTO orders (user_id, meal_id, quantity, address, status) VALUES (%(user_id)s, %(meal_id)s, %(quantity)s, %(address)s, %(status)s)", {
-                'user_id': user_id, 'meal_id': meal_id, 'quantity': quantity, 'address': address, 'status': status})
+            cur.execute("INSERT INTO orders (user_id, image, meal_id, quantity, address, status) VALUES (%(user_id)s, %(image)s, %(meal_id)s, %(quantity)s, %(address)s, %(status)s)", {
+                'user_id': user_id, 'meal_id': meal_id, 'image': res['image'], 'quantity': quantity, 'address': address, 'status': status})
             conn.commit()
             return {'Message': "Food item has been ordered"}, 201
         except (Exception, psycopg2.DatabaseError) as error:
@@ -190,9 +191,9 @@ class UserOrder(Resource):
             # check if order history exist
             res = cur.fetchall()
             if not res:
-                return {'Message': 'No order history'}, 404
+                return {'Orders': 'No order history'}, 404
 
-            return {'Message': res}, 200
+            return {'Orders': res}, 200
         except (Exception, psycopg2.DatabaseError) as error:
             conn = db()
             cur = conn.cursor()

@@ -36,7 +36,7 @@ class Registerv2(Resource):
         help="Password is required"
     )
     parser.add_argument(
-        'confirm password',
+        'confirm_password',
         type=str,
         required=True,
         help="Confirm password is required"
@@ -50,7 +50,7 @@ class Registerv2(Resource):
         username = data["username"]
         email = data["email"]
         password = data["password"]
-        confirm_password = data["confirm password"]
+        confirm_password = data["confirm_password"]
 
         if not username:
             return {'Message': 'Username field is required'}, 400
@@ -75,7 +75,7 @@ class Registerv2(Resource):
             elif len(password) < 8:
                 return {"Message": "Make sure your password is at lest 8 letters"}, 400
             elif password != confirm_password:
-                return {"Message": "password and confirm_password must be the same"}, 400
+                return {"Message": "Password and Confirm Password must match"}, 400
             else:
                 break
 
@@ -181,7 +181,10 @@ class LoginV2(Resource):
                 if checked_password == True:
                     token = jwt.encode({'id': res['id'], 'exp': datetime.datetime.utcnow(
                     ) + datetime.timedelta(minutes=60)}, 'secret')
-                    return {'token': token.decode('UTF-8')}, 200
+
+                    secret = {'token': token.decode(
+                        'UTF-8'), 'role': res['type']}
+                    return {'Message': secret}, 200
 
                 return {'Message': 'Invalid credentials'}, 400
         except (Exception, psycopg2.DatabaseError) as error:
