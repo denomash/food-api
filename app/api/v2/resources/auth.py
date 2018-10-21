@@ -75,7 +75,7 @@ class Registerv2(Resource):
             elif len(password) < 8:
                 return {"Message": "Make sure your password is at lest 8 letters"}, 400
             elif password != confirm_password:
-                return {"Message": "password and confirm_password must be the same"}, 400
+                return {"Message": "Password and Confirm Password must match"}, 400
             else:
                 break
 
