@@ -11,7 +11,7 @@ from .api.v1.resources.orders import Get_orders, Orders, Orderbyid
 from .api.v1.resources.auth import Register, Login
 from .api.v2.resources.orders import Ordersv2, EditOrderv2, UserOrder
 from .api.v2.resources.auth import Registerv2, LoginV2
-from .api.v2.resources.food import Menu
+from .api.v2.resources.food import Menu, EditMenu
 from .api.v2.resources.promote import Promote
 from .api.v2.resources.users import Users
 
@@ -56,6 +56,7 @@ api.add_resource(EditOrderv2, '/v2/orders/<int:order_id>')
 api.add_resource(Registerv2, '/v2/auth/signup')
 api.add_resource(LoginV2, '/v2/auth/login')
 api.add_resource(Menu, '/v2/menu')
+api.add_resource(EditMenu, '/v2/menu/<int:meal_id>')
 api.add_resource(UserOrder, '/v2/users/orders')
 api.add_resource(Promote, '/v2/promote/<int:user_id>')
 api.add_resource(Users, '/v2/users')
