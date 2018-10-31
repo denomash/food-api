@@ -103,14 +103,63 @@ class Menu(Resource):
             return {'Message': 'current transaction is aborted'}, 500
 
 class EditMenu(Resource):
-        
+    parser = reqparse.RequestParser()
+
+    parser.add_argument(
+        'image',
+        type=str,
+        required=True,
+        help="Image is required"
+    )
+    parser.add_argument(
+        'item',
+        type=str,
+        required=True,
+        help="Food item is required"
+    )
+    parser.add_argument(
+        'price',
+        type=float,
+        required=True,
+        help="Price is required"
+    )
+    parser.add_argument(
+        'description',
+        type=str,
+        required=True,
+        help="Description is required"
+    )
+
+    @check_auth
+    def get(current_user, self, meal_id):
+        """get meal by id"""
+
+        try:
+            conn = db()
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            cur.execute("SELECT * from meals WHERE meal_id = %(meal_id)s",
+                        {'meal_id': meal_id})
+            meals = cur.fetchall()
+
+            if not meals:
+                return {"Meals": "Meal with id does not exist"}, 404
+
+            return {"Meals": meals}, 200
+        except (Exception, psycopg2.DatabaseError) as error:
+            conn = db()
+            cur = conn.cursor()
+            cur.execute("rollback;")
+            print(error)
+            return {'Message': 'current transaction is aborted'}, 500
+
+
     @check_auth
     def put(current_user, self, meal_id):
         """add a food item"""
         if current_user["type"] != "admin":
             return {"Message": "Must be an admin"}, 401
 
-        data = Menu.parser.parse_args()
+        data = EditMenu.parser.parse_args()
         image = data["image"]
         item = data["item"]
         price = data["price"]
@@ -141,6 +190,35 @@ class EditMenu(Resource):
 
             conn.commit()
             return {'Message': 'Meal updated successfully'}, 201
+        except (Exception, psycopg2.DatabaseError) as error:
+            conn = db()
+            cur = conn.cursor()
+            cur.execute("rollback;")
+            print(error)
+            return {'Message': 'current transaction is aborted'}, 500
+
+    @check_auth
+    def delete(current_user, self, meal_id):
+        """add a food item"""
+        if current_user["type"] != "admin":
+            return {"Message": "Must be an admin"}, 401
+
+        try:
+            conn = db()
+            cur = conn.cursor()
+
+            cur.execute("SELECT * FROM meals WHERE meal_id = %(meal_id)s",
+                        {'meal_id': meal_id})
+
+            # check if order exist
+            if cur.fetchone() is None:
+                return {'Message': 'Invalid mealId'}, 400
+
+            cur.execute("DELETE FROM meals WHERE meal_id=%(meal_id)s", {
+                        'meal_id': meal_id})
+
+            conn.commit()
+            return {'Message': 'Meal Deleted successfully'}, 200
         except (Exception, psycopg2.DatabaseError) as error:
             conn = db()
             cur = conn.cursor()
