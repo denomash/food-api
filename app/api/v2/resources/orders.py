@@ -78,7 +78,7 @@ class EditOrderv2(Resource):
                         {'status': status, 'order_id': order_id})
             conn.commit()
 
-            return {'Message': 'Order status updated'}, 200
+            return {'Message': 'Order status updated'}, 204
         except (Exception, psycopg2.DatabaseError) as error:
             conn = db()
             cur = conn.cursor()
