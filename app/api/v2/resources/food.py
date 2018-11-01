@@ -3,6 +3,7 @@
 
 from flask_restful import Resource, reqparse
 import jwt
+import re
 import psycopg2
 import psycopg2.extras
 from functools import wraps
@@ -80,6 +81,18 @@ class Menu(Resource):
             return {'Message': 'Price field is required'}, 400
         if not description:
             return {'Message': 'Description field is required'}, 400
+
+        while True:
+            if not re.match(r"(^[A-Za-z]+$)", item):
+                return {"Message": "Food item must be an alphabet"}, 400
+            if not re.match(r"(^[A-Za-z]+$)", description):
+                return {"Message": "Food item must be an alphabet"}, 400
+            else:
+                break
+        if type(price) != float:
+            return {'Message': 'Price must be an float'}, 400
+        if price < 1:
+            return{'Message': 'Price must must be more than one'}, 400
 
         try:
             conn = db()
