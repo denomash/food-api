@@ -32,13 +32,13 @@ class Menu(Resource):
         'price',
         type=float,
         required=True,
-        help="Price is required"
+        help="Price is required and must be float number"
     )
     parser.add_argument(
         'description',
         type=str,
         required=True,
-        help="Description is required"
+        help="Description is required and must be alphabets"
     )
 
     def get(self):
