@@ -55,3 +55,52 @@ class Register(Resource):
 
         users.append(user)
         return {'User': user}, 201
+
+
+class Login(Resource):
+    """docstring for Login"""
+
+    parser = reqparse.RequestParser()
+
+    parser.add_argument(
+        'username',
+        type=str,
+        required=True,
+        help="Username required"
+    )
+    parser.add_argument(
+        'password',
+        type=str,
+        required=True,
+        help="Password is required"
+    )
+
+    def post(self):
+
+        data = Login.parser.parse_args()
+        username = data["username"]
+        password = data["password"]
+
+        if not users:
+            return {'Message': 'No users found'}, 404
+
+        for user in users:
+            if username == user['username'] and password == user['password']:
+
+                return {'User': "Login successfull"}
+
+            elif (not username or not password):
+
+                return {'Message': 'Fields can\'t be blank'}, 401
+
+            elif (username != user['username'] and password != user['password']):
+
+                return {'Message': 'Invalid credentials'}, 400
+
+            elif (username == user['username'] and password != user['password']):
+
+                return {'Message': 'Invalid credentials for user\'s password'}, 400
+
+            elif (username != user['username'] and password == user['password']):
+
+                return {'Message': 'Invalid credentials'}, 400
