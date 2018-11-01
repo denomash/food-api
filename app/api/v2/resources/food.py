@@ -218,7 +218,7 @@ class EditMenu(Resource):
                         'meal_id': meal_id})
 
             conn.commit()
-            return {'Message': 'Meal Deleted successfully'}, 200
+            return {'Message': 'Meal Deleted successfully'}, 204
         except (Exception, psycopg2.DatabaseError) as error:
             conn = db()
             cur = conn.cursor()
